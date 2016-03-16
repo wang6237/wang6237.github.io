@@ -2,9 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.z210.me/2016/03/16/python_001/</loc>
+    
+    <lastmod>2016-03-16T09:03:59.152Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.z210.me/2016/03/15/hello-world/</loc>
     
-    <lastmod>2016-03-15T11:24:23.247Z</lastmod>
+    <lastmod>2016-03-16T03:29:02.306Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.z210.me/categories/index.html</loc>
+    
+    <lastmod>2016-03-16T03:18:49.635Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.z210.me/tags/index.html</loc>
+    
+    <lastmod>2016-03-16T03:13:15.219Z</lastmod>
     
   </url>
   
