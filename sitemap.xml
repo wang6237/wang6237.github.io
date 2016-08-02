@@ -2,16 +2,30 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://www.z210.me/2016/04/12/python_003/</loc>
+    <loc>http://www.z210.me/2016/08/02/json%E5%92%8Cjsonp/</loc>
     
-    <lastmod>2016-04-22T20:36:22.181Z</lastmod>
+    <lastmod>2016-08-02T07:35:38.849Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.z210.me/2016/05/04/vagrant%20settings/</loc>
+    
+    <lastmod>2016-05-04T03:29:54.530Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://www.z210.me/2016/04/12/python_Django_models/</loc>
     
-    <lastmod>2016-04-13T09:22:17.376Z</lastmod>
+    <lastmod>2016-04-22T20:51:38.815Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.z210.me/2016/04/12/python_003/</loc>
+    
+    <lastmod>2016-04-22T20:36:22.181Z</lastmod>
     
   </url>
   
@@ -33,13 +47,6 @@
     <loc>http://www.z210.me/2016/03/22/python_002/</loc>
     
     <lastmod>2016-03-22T02:17:22.548Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.z210.me/categories/index.html</loc>
-    
-    <lastmod>2016-03-16T11:27:59.292Z</lastmod>
     
   </url>
   
