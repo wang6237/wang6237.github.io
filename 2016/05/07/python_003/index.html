@@ -1,0 +1,598 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Python," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="自定义Session功能
+在很多的web项目中都是需要Session的，但是并不是所有的web框架都自带Session功能，所以有时就需要我们自己来实现Session功能。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="自定义Session">
+<meta property="og:url" content="http://www.z210.me/2016/05/07/python_003/index.html">
+<meta property="og:site_name" content="记录点滴">
+<meta property="og:description" content="自定义Session功能
+在很多的web项目中都是需要Session的，但是并不是所有的web框架都自带Session功能，所以有时就需要我们自己来实现Session功能。">
+<meta property="og:updated_time" content="2016-08-02T10:27:56.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="自定义Session">
+<meta name="twitter:description" content="自定义Session功能
+在很多的web项目中都是需要Session的，但是并不是所有的web框架都自带Session功能，所以有时就需要我们自己来实现Session功能。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://www.z210.me/2016/05/07/python_003/"/>
+
+  <title> 自定义Session | 记录点滴 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">记录点滴</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                自定义Session
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-05-07T16:00:00+08:00" content="2016-05-07">
+              2016-05-07
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Python/" itemprop="url" rel="index">
+                    <span itemprop="name">Python</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="自定义Session功能"><a href="#自定义Session功能" class="headerlink" title="自定义Session功能"></a>自定义Session功能</h1><blockquote>
+<p>在很多的web项目中都是需要Session的，但是并不是所有的web框架都自带Session功能，所以有时就需要我们自己来实现Session功能。</p>
+</blockquote>
+<a id="more"></a>
+<h2 id="Session与Cookie"><a href="#Session与Cookie" class="headerlink" title="Session与Cookie"></a>Session与Cookie</h2><p>Cookie是服务器将一些信息存在客户端的“一种容器”，服务器会在下次访问的时候去验证这些信息。存在客户端；<br>Session是服务器将客户端的一些信息保存在服务端的“一种容器”，服务器会在下次访问的时候去验证这些信息。存在服务端；</p>
+<p>当客户端登录成功后，服务端会根据用户的登录信息在Session中生成一个加密的”容器”，名称是一个随机的字符串，在这个”容器”中存储了一些重要的信息，例如：用户名，邮箱等，存储完成后，服务端会将这个字符串传给客户端，客户端会将这个字符串，存储在cookie中，并且每次客户端访问的时候，服务端都会验证这个字符串。</p>
+<h2 id="实现原理"><a href="#实现原理" class="headerlink" title="实现原理"></a>实现原理</h2><p>试验环境是在tornado的基础上实现的，利用tornado的initialize实现的，还有面向对象的 <strong>getitem</strong>、<strong>setitem</strong>、<strong>delitem</strong> 三个方法，通过这三个方法就能分别实现对session_id的获取、设置、删除,这样一个session的基本功能就实现了。</p>
+<blockquote>
+<p>关于这三个面向对象的特殊方法可以参见python的面向对象章节；web框架的基本流程<a href="http://www.cnblogs.com/wupeiqi/articles/5341480.html" target="_blank" rel="external">详见</a></p>
+</blockquote>
+<h2 id="代码剖析"><a href="#代码剖析" class="headerlink" title="代码剖析"></a>代码剖析</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div></pre></td><td class="code"><pre><div class="line"></div><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding:utf-8 -*-</span></div><div class="line"><span class="keyword">import</span> tornado.ioloop</div><div class="line"><span class="keyword">import</span> tornado.web</div><div class="line"><span class="keyword">from</span> hashlib <span class="keyword">import</span> sha1</div><div class="line"><span class="keyword">import</span> os, time</div><div class="line"></div><div class="line"><span class="comment"># 创建全局变量</span></div><div class="line">session_container = &#123;&#125;</div><div class="line"></div><div class="line"><span class="comment"># 生成随机Session.id</span></div><div class="line">create_session_id = <span class="keyword">lambda</span>: sha1(<span class="string">'%s%s'</span> % (os.urandom(<span class="number">16</span>), time.time())).hexdigest()</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Session</span><span class="params">(object)</span>:</span></div><div class="line"></div><div class="line">    session_id = <span class="string">"session_cookie"</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, request)</span>:</span></div><div class="line">		<span class="comment"># 获取cookie中的Session.id</span></div><div class="line">        session_value = request.get_cookie(Session.session_id)</div><div class="line">		<span class="comment"># 判断，如果不存在，则生成session.id</span></div><div class="line">        <span class="keyword">if</span> <span class="keyword">not</span> session_value:</div><div class="line">            <span class="comment"># 创建随机字符串</span></div><div class="line">            self._id = create_session_id()</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="comment"># 如果有，直接将客户端的随机字符串设置为 _id</span></div><div class="line">            self._id = session_value</div><div class="line">		<span class="comment"># 在客户端的cookie中设置新生成的session.id</span></div><div class="line">        request.set_cookie(Session.session_id, self._id)</div><div class="line"></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__getitem__</span><span class="params">(self, key)</span>:</span></div><div class="line">		    <span class="comment"># 默认取值为None</span></div><div class="line">        ret = <span class="keyword">None</span></div><div class="line">        <span class="keyword">try</span>:</div><div class="line">					  <span class="comment"># 尝试取值</span></div><div class="line">            ret = session_container[self._id][key]</div><div class="line">        <span class="keyword">except</span> Exception,e:</div><div class="line">            <span class="keyword">pass</span></div><div class="line">				<span class="comment"># 然后返回结果</span></div><div class="line">        <span class="keyword">return</span> ret</div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__setitem__</span><span class="params">(self, key, value)</span>:</span></div><div class="line">        <span class="comment"># self._id， 判断session_id 是否存在，如果存在直接取值，如果不存在设置值</span></div><div class="line">        <span class="keyword">if</span> session_container.has_key(self._id):</div><div class="line">            session_container[self._id][key] = value</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            <span class="comment"># key = is_login</span></div><div class="line">            <span class="comment"># value = true</span></div><div class="line">            <span class="comment"># &#123;&#125;</span></div><div class="line">            <span class="comment"># &#123;</span></div><div class="line">            <span class="comment">#     随机字符串:&#123;'is_login': "true"&#125;</span></div><div class="line">            <span class="comment"># &#125;</span></div><div class="line">            session_container[self._id] = &#123;key: value&#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__delitem__</span><span class="params">(self, key)</span>:</span></div><div class="line">		<span class="comment"># 删除self._id 删除sessionid</span></div><div class="line">        <span class="keyword">del</span> session_container[self._id][key]</div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">BaseHandler</span><span class="params">(tornado.web.RequestHandler)</span>:</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">initialize</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="comment"># my_session['k1']访问 __getitem__ 方法</span></div><div class="line">        self.my_session = Session(self)</div><div class="line"></div><div class="line"></div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">MainHandler</span><span class="params">(BaseHandler)</span>:</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></div><div class="line">		<span class="comment"># 在session中获取is_login的值，如果有说明已经登录，如果没有则跳转到login页面</span></div><div class="line">        ret = self.my_session[<span class="string">'is_login'</span>]</div><div class="line">        <span class="keyword">if</span> ret:</div><div class="line">            self.write(<span class="string">'index'</span>)</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            self.redirect(<span class="string">"/login"</span>)</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">LoginHandler</span><span class="params">(BaseHandler)</span>:</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="comment"># self.set_cookie()</span></div><div class="line">        <span class="comment"># self.get_cookie()</span></div><div class="line">        <span class="comment"># 写 ：session_cookie = "最忌字符串"</span></div><div class="line">        self.render(<span class="string">'login.html'</span>)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">post</span><span class="params">(self, *args, **kwargs)</span>:</span></div><div class="line"></div><div class="line">        username = self.get_argument(<span class="string">'username'</span>)</div><div class="line">        password = self.get_argument(<span class="string">'pwd'</span>)</div><div class="line">        <span class="keyword">if</span> username == <span class="string">'youzi'</span> <span class="keyword">and</span> password == <span class="string">'123'</span>:</div><div class="line"></div><div class="line">            self.my_session[<span class="string">"is_login"</span>] = <span class="string">"true"</span></div><div class="line">            self.redirect(<span class="string">'/index'</span>)</div><div class="line">        <span class="keyword">else</span>:</div><div class="line">            self.render(<span class="string">'login.html'</span>, **&#123;<span class="string">'status'</span>: <span class="string">'用户名或密码错误'</span>&#125;)</div><div class="line"></div><div class="line">settings = &#123;</div><div class="line">    <span class="string">'template_path'</span>: <span class="string">'template'</span>,</div><div class="line">    <span class="string">'static_path'</span>: <span class="string">'template'</span>,</div><div class="line">    <span class="string">'static_url_prefix'</span>: <span class="string">'/template/'</span>,</div><div class="line">    <span class="string">'cookie_secret'</span>: <span class="string">'aiuasdhflashjdfoiuashdfiuh'</span>,</div><div class="line">    <span class="string">'login_url'</span>: <span class="string">'/login'</span></div><div class="line">&#125;</div><div class="line"></div><div class="line">application = tornado.web.Application([</div><div class="line">    (<span class="string">r"/index"</span>, MainHandler),</div><div class="line">    (<span class="string">r"/login"</span>, LoginHandler),</div><div class="line">], **settings)</div><div class="line"></div><div class="line"></div><div class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</div><div class="line">    application.listen(<span class="number">8888</span>)</div><div class="line">    tornado.ioloop.IOLoop.instance().start()</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Python/" rel="tag">#Python</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/04/30/python_002/" rel="next" title="Python 入门和介绍">
+                <i class="fa fa-chevron-left"></i> Python 入门和介绍
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/05/20/python_016/" rel="prev" title="Django 入门">
+                Django 入门 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="Kevin Wang" />
+          <p class="site-author-name" itemprop="name">Kevin Wang</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">7</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">分类</span>
+              
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">3</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#自定义Session功能"><span class="nav-number">1.</span> <span class="nav-text">自定义Session功能</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Session与Cookie"><span class="nav-number">1.1.</span> <span class="nav-text">Session与Cookie</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实现原理"><span class="nav-number">1.2.</span> <span class="nav-text">实现原理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码剖析"><span class="nav-number">1.3.</span> <span class="nav-text">代码剖析</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kevin Wang</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
