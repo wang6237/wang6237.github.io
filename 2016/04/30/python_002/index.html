@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Kevin Wang" />
+
+
+
+<meta name="description" content="Python 入门和介绍Python介绍
+python的创始人为吉多·范罗苏姆（Guido van Rossum）.1989年的圣诞节期间，吉多·范罗苏姆为了在阿姆斯特丹打发时间，决心开发一个新的脚本解释程序，作为ABC语言的一种继承.（看见没，这就是大神，一个假期就能搞个独立的语言出来….）">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python 入门和介绍">
+<meta property="og:url" content="http://www.z210.me/2016/04/30/python_002/index.html">
+<meta property="og:site_name" content="记录点滴">
+<meta property="og:description" content="Python 入门和介绍Python介绍
+python的创始人为吉多·范罗苏姆（Guido van Rossum）.1989年的圣诞节期间，吉多·范罗苏姆为了在阿姆斯特丹打发时间，决心开发一个新的脚本解释程序，作为ABC语言的一种继承.（看见没，这就是大神，一个假期就能搞个独立的语言出来….）">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/425762/201510/425762-20151024160748145-1165720810.png">
+<meta property="og:image" content="http://images2015.cnblogs.com/blog/425762/201510/425762-20151024170628833-536583386.png">
+<meta property="og:image" content="http://7xry0x.com1.z0.glb.clouddn.com/name.png">
+<meta property="og:image" content="http://7xry0x.com1.z0.glb.clouddn.com/name2.png">
+<meta property="og:image" content="http://7xry0x.com1.z0.glb.clouddn.com/name3.png">
+<meta property="og:updated_time" content="2016-08-02T10:27:57.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python 入门和介绍">
+<meta name="twitter:description" content="Python 入门和介绍Python介绍
+python的创始人为吉多·范罗苏姆（Guido van Rossum）.1989年的圣诞节期间，吉多·范罗苏姆为了在阿姆斯特丹打发时间，决心开发一个新的脚本解释程序，作为ABC语言的一种继承.（看见没，这就是大神，一个假期就能搞个独立的语言出来….）">
+<meta name="twitter:image" content="http://images2015.cnblogs.com/blog/425762/201510/425762-20151024160748145-1165720810.png">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="记录点滴" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Python 入门和介绍 | 记录点滴</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Kevin Wang</a></h1>
+        </hgroup>
+
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:ykwang@vip.qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/wang6237" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vagrant/">vagrant</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于Python</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Kevin Wang</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Kevin Wang</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:ykwang@vip.qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/wang6237" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-python_002" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/04/30/python_002/" class="article-date">
+      <time datetime="2016-04-30T08:00:00.000Z" itemprop="datePublished">2016-04-30</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Python 入门和介绍
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h1 id="Python-入门和介绍"><a href="#Python-入门和介绍" class="headerlink" title="Python 入门和介绍"></a>Python 入门和介绍</h1><h2 id="Python介绍"><a href="#Python介绍" class="headerlink" title="Python介绍"></a>Python介绍</h2><blockquote>
+<p>python的创始人为吉多·范罗苏姆（Guido van Rossum）.1989年的圣诞节期间，吉多·范罗苏姆为了在阿姆斯特丹打发时间，决心开发一个新的脚本解释程序，作为ABC语言的一种继承.（看见没，这就是大神，一个假期就能搞个独立的语言出来….）</p>
+</blockquote>
+<a id="more"></a>
+<h3 id="Python的应用"><a href="#Python的应用" class="headerlink" title="Python的应用"></a>Python的应用</h3><p>python可以应用于众多领域，如: 数据分析、组件集成、网络服务、图像处理、数值计算和科学计算等众多领域。目前业内几乎所有大中型互联网企业都在使用Python，如：Youtube、Dropbox、BT、Quora（中国知乎）、豆瓣、知乎、Google、Yahoo!、Facebook、NASA、百度、腾讯、汽车之家、美团等。互联网公司广泛使用Python来做的事一般有：自动化运维、自动化测试、大数据分析、爬虫、Web 等。 </p>
+<h3 id="Python的种类"><a href="#Python的种类" class="headerlink" title="Python的种类"></a>Python的种类</h3><p>C 和 Python、Java、C#等</p>
+<p>C语言： 代码编译得到 机器码 ，机器码在处理器上直接执行，每一条指令控制CPU工作</p>
+<p>其他语言： 代码编译得到 字节码 ，虚拟机执行字节码并转换成机器码再后在处理器上执行</p>
+<p>Python 和 C  Python这门语言是由C开发而来</p>
+<p>　　对于使用：Python的类库齐全并且使用简洁，如果要实现同样的功能，Python 10行代码可以解决，C可能就需要100行甚至更多.<br>　　对于速度：Python的运行速度相较与C，绝逼是慢了</p>
+<p>Python 和 Java、C#等</p>
+<p>　　对于使用：Linux原装Python，其他语言没有；以上几门语言都有非常丰富的类库支持<br>　　对于速度：Python在速度上可能稍显逊色</p>
+<p>所以，Python和其他语言没有什么本质区别，其他区别在于：擅长某领域、人才丰富、先入为主。</p>
+<ul>
+<li>Cpython<br>  Python的官方版本，使用C语言实现，使用最为广泛，CPython的实现会将源文件(.py文件)转换为字节码文件(*.pyc),然后运行在Python的虚拟机上。</li>
+<li>Jython<br>  Python的Java实现，Jython会将Python代码动态编译成Java字节码，然后在JVM上运行</li>
+<li>IronPython<br>  Python的C#实现，IronPython将Python代码编译成C#字节码，然后在CLR上运行。（与Jython类似）</li>
+<li>PyPy（特殊）<br>  Python实现的Python，将Python的字节码字节码再编译成机器码。</li>
+<li>RubyPython、Brython …</li>
+</ul>
+<h2 id="Python入门"><a href="#Python入门" class="headerlink" title="Python入门"></a>Python入门</h2><h3 id="Python安装-略"><a href="#Python安装-略" class="headerlink" title="Python安装(略)"></a>Python安装(略)</h3><h3 id="Hello-World"><a href="#Hello-World" class="headerlink" title="Hello World"></a>Hello World</h3><p>进入python的终端：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[vagrant@bogon ~]$ python</div><div class="line">Python 2.7.5 (default, Nov 20 2015, 02:00:19) </div><div class="line">[GCC 4.8.5 20150623 (Red Hat 4.8.5-4)] on linux2</div><div class="line">Type <span class="string">"help"</span>, <span class="string">"copyright"</span>, <span class="string">"credits"</span> or <span class="string">"license"</span> <span class="keyword">for</span> more information.</div><div class="line">&gt;&gt;&gt; <span class="built_in">print</span> <span class="string">"hello,world"</span></div><div class="line">hello,world</div><div class="line">&gt;&gt;&gt;</div></pre></td></tr></table></figure></p>
+<p>或者创建hello.py<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding:utf-8 -*-</span></div><div class="line"></div><div class="line"><span class="keyword">print</span> <span class="string">"hello,word"</span></div></pre></td></tr></table></figure></p>
+<p>然后保存并推出，执行命令 python hello.py<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[vagrant@bogon ~]$ python hello.py </div><div class="line">hello,world</div></pre></td></tr></table></figure></p>
+<p>那么Python在内部是如何执行的呢？如图所示：<br><img src="http://images2015.cnblogs.com/blog/425762/201510/425762-20151024160748145-1165720810.png" alt="python内部执行流程图"></p>
+<h3 id="1、解释器"><a href="#1、解释器" class="headerlink" title="1、解释器"></a>1、解释器</h3><p>在上面的例子中我们在脚本hello.py的头部添加了<code>#!/usr/bin/env python</code>，我们指定了hello.py的解释器，这样就能像执行shell脚本一样执行python脚本，<code>./hello.py</code>.</p>
+<h3 id="内容编码"><a href="#内容编码" class="headerlink" title="内容编码"></a>内容编码</h3><pre><code>python解释器在加载.py文件中的代码时，会对内容进行编码(默认ascill)
+ASCII（American Standard Code for Information Interchange，美国标准信息交换代码）是基于拉丁字母的一套电脑编码系统，主要用于显示现代英语和其他西欧语言，其最多只能用 8 位来表示（一个字节），即：2**8 = 256，所以，ASCII码最多只能表示 256 个符号。
+</code></pre><p><img src="http://images2015.cnblogs.com/blog/425762/201510/425762-20151024170628833-536583386.png" alt="ascill编码"></p>
+<blockquote>
+<p>显然ASCII码无法将世界上的各种文字和符号全部表示，所以，就需要新出一种可以代表所有符和符号的编码，即：Unicode</p>
+<p>Unicode（统一码、万国码、单一码）是一种在计算机上使用的字符编码。Unicode 是为了解决传统的字符编码方案的局限而产生的，它为每种语言中的每个字符设定了统一并且唯一的二进制编码，规定虽有的字符和符号最少由 16 位来表示（2个字节），即：2 **16 = 65536，<br>注：此处说的的是最少2个字节，可能更多</p>
+<p>UTF-8，是对Unicode编码的压缩和优化，他不再使用最少使用2个字节，而是将所有的字符和符号进行分类：ascii码中的内容用1个字节保存、欧洲的字符用2个字节保存，东亚的字符用3个字节保存…</p>
+</blockquote>
+<p>所以，python解释器在加载 .py 文件中的代码时，会对内容进行编码（默认ascill），如果是如下代码的话：</p>
+<p>报错：ascii码无法表示中文<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"> </div><div class="line"><span class="keyword">print</span> <span class="string">"你好，世界"</span></div></pre></td></tr></table></figure></p>
+<p>正确的是应该告诉解释器用什么编码来执行源代码：<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding:utf-8 -*-</span></div><div class="line"></div><div class="line"><span class="keyword">print</span> <span class="string">"你好，世界"</span></div></pre></td></tr></table></figure></p>
+<h3 id="注释"><a href="#注释" class="headerlink" title="注释"></a>注释</h3><pre><code>当行注视：# 被注释内容
+多行注释：&quot;&quot;&quot; 被注释内容 &quot;&quot;&quot;
+</code></pre><h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><ol>
+<li>声明变量<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding:utf-8 -*-</span></div><div class="line"></div><div class="line">name = <span class="string">"Nice"</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>上述代码声明了一个变量，变量名为：name,变量name的值为:”Nice”<br>变量的作用：昵称，其代指内存里某个地址中保存的内容<br><img src="http://7xry0x.com1.z0.glb.clouddn.com/name.png" alt="name"><br><code>变量定义的规则：</code></p>
+<ul>
+<li>变量名只能是字母、数组或者下划线的任意组合</li>
+<li>变量名的首字符不能是数字</li>
+<li>关键字不能声明为变量名</li>
+</ul>
+<blockquote>
+<p>关键字如下：<br>[‘and’, ‘as’, ‘assert’, ‘break’, ‘class’, ‘continue’, ‘def’, ‘del’, ‘elif’, ‘else’, ‘except’, ‘exec’, ‘finally’, ‘for’, ‘from’, ‘global’, ‘if’, ‘import’, ‘in’, ‘is’, ‘lambda’, ‘not’, ‘or’, ‘pass’, ‘print’, ‘raise’, ‘return’, ‘try’, ‘while’, ‘with’, ‘yield’]</p>
+</blockquote>
+<ol>
+<li>变量的赋值<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding:utf-8 -*-</span></div><div class="line"></div><div class="line">name = <span class="string">"Nice"</span></div><div class="line">name1 = <span class="string">"Nike"</span></div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h2 id=""><a href="#" class="headerlink" title=""></a><img src="http://7xry0x.com1.z0.glb.clouddn.com/name2.png" alt="name"></h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/usr/bin/env python</span></div><div class="line"><span class="comment"># -*- coding:utf-8 -*-</span></div><div class="line"></div><div class="line">name = <span class="string">"Nice"</span></div><div class="line">name1 = name</div></pre></td></tr></table></figure>
+<p><img src="http://7xry0x.com1.z0.glb.clouddn.com/name3.png" alt="name"></p>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/04/30/python_002/">Python 入门和介绍</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">Kevin Wang</a></p>
+        <p><span>发布时间:</span>2016-04-30, 16:00:00</p>
+        <p><span>最后更新:</span>2016-08-02, 18:27:57</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/04/30/python_002/" title="Python 入门和介绍">http://www.z210.me/2016/04/30/python_002/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://www.z210.me/2016/04/30/python_002/　　作者: Kevin Wang" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/05/07/python_003/">
+                    自定义Session
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/04/20/hello-world/">
+                    Hello World
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Python-入门和介绍"><span class="toc-number">1.</span> <span class="toc-text">Python 入门和介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Python介绍"><span class="toc-number">1.1.</span> <span class="toc-text">Python介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Python的应用"><span class="toc-number">1.1.1.</span> <span class="toc-text">Python的应用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Python的种类"><span class="toc-number">1.1.2.</span> <span class="toc-text">Python的种类</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Python入门"><span class="toc-number">1.2.</span> <span class="toc-text">Python入门</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Python安装-略"><span class="toc-number">1.2.1.</span> <span class="toc-text">Python安装(略)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hello-World"><span class="toc-number">1.2.2.</span> <span class="toc-text">Hello World</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1、解释器"><span class="toc-number">1.2.3.</span> <span class="toc-text">1、解释器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#内容编码"><span class="toc-number">1.2.4.</span> <span class="toc-text">内容编码</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#注释"><span class="toc-number">1.2.5.</span> <span class="toc-text">注释</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#变量"><span class="toc-number">1.2.6.</span> <span class="toc-text">变量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#"><span class="toc-number">1.3.</span> <span class="toc-text"></span></a></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Python 入门和介绍　| 记录点滴　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/05/07/python_003/" title="上一篇: 自定义Session">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/04/20/hello-world/" title="下一篇: Hello World">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/08/04/json_jsonp/">JSON和JSONP</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/30/python_Django_models/">Django Model 操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/25/vagrant_settings/">vagrant 配置HOST 与虚拟机多路径同步</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/20/python_016/">Django 入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/07/python_003/">自定义Session</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/30/python_002/">Python 入门和介绍</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/20/hello-world/">Hello World</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016 Kevin Wang
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>

@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="zh-Hans">
+<head>
+
+    <!--[if lt IE 9]>
+        <style>body {display: none; background: none !important} </style>
+        <meta http-equiv="Refresh" Content="0; url=//outdatedbrowser.com/" />
+    <![endif]-->
+
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge, chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="format-detection" content="telephone=no" />
+<meta name="author" content="Kevin Wang" />
+
+
+
+<meta name="description" content="Django Model 介绍
+一般情况下操作数据库都是先创建数据库、设计表结构和字段；使用MySQLdb来连接数据库，并编写访问数据库的代码；然后业务逻辑层调用访问数据的代码，执行数据操作。而Django为我们提供了一种全新的方式，即关系对象映射(Object Relational Mapping，简称ORM)Django中遵循 Code Frist 的原则，即：根据代码中定义的类来自动生成数据">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Django Model 操作">
+<meta property="og:url" content="http://www.z210.me/2016/06/30/python_Django_models/index.html">
+<meta property="og:site_name" content="记录点滴">
+<meta property="og:description" content="Django Model 介绍
+一般情况下操作数据库都是先创建数据库、设计表结构和字段；使用MySQLdb来连接数据库，并编写访问数据库的代码；然后业务逻辑层调用访问数据的代码，执行数据操作。而Django为我们提供了一种全新的方式，即关系对象映射(Object Relational Mapping，简称ORM)Django中遵循 Code Frist 的原则，即：根据代码中定义的类来自动生成数据">
+<meta property="og:updated_time" content="2016-08-02T10:28:38.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Django Model 操作">
+<meta name="twitter:description" content="Django Model 介绍
+一般情况下操作数据库都是先创建数据库、设计表结构和字段；使用MySQLdb来连接数据库，并编写访问数据库的代码；然后业务逻辑层调用访问数据的代码，执行数据操作。而Django为我们提供了一种全新的方式，即关系对象映射(Object Relational Mapping，简称ORM)Django中遵循 Code Frist 的原则，即：根据代码中定义的类来自动生成数据">
+
+<link rel="apple-touch-icon" href= "/apple-touch-icon.png">
+
+
+    <link rel="alternate" href="/atom.xml" title="记录点滴" type="application/atom+xml">
+
+
+
+    <link rel="shortcut icon" href="/favicon.png">
+
+
+
+    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
+
+
+
+    <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
+
+
+
+    <script src="//cdn.bootcss.com/pace/1.0.2/pace.min.js"></script>
+    <link href="//cdn.bootcss.com/pace/1.0.2/themes/blue/pace-theme-minimal.css" rel="stylesheet">
+
+
+<link rel="stylesheet" href="/css/style.css">
+
+
+
+<link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
+
+
+<title>Django Model 操作 | 记录点滴</title>
+
+<script src="//cdn.bootcss.com/jquery/2.2.4/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/clipboard.js/1.5.10/clipboard.min.js"></script>
+
+<script>
+    var yiliaConfig = {
+        fancybox: true,
+        animate: true,
+        isHome: false,
+        isPost: true,
+        isArchive: false,
+        isTag: false,
+        isCategory: false,
+        fancybox_js: "//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.js",
+        scrollreveal: "//cdn.bootcss.com/scrollReveal.js/3.1.4/scrollreveal.min.js",
+        search: undefined
+    }
+</script>
+
+
+    <script> yiliaConfig.jquery_ui = [false]; </script>
+
+
+
+    <script> yiliaConfig.rootUrl = "\/";</script>
+
+
+
+
+
+
+</head>
+<body>
+  <div id="container">
+    <div class="left-col">
+    <div class="overlay"></div>
+<div class="intrude-less">
+    <header id="header" class="inner">
+        <a href="/" class="profilepic">
+            <img src="/img/avatar.png" class="animated zoomIn">
+        </a>
+        <hgroup>
+          <h1 class="header-author"><a href="/">Kevin Wang</a></h1>
+        </hgroup>
+
+        
+
+        
+
+
+        
+            <div id="switch-btn" class="switch-btn">
+                <div class="icon">
+                    <div class="icon-ctn">
+                        <div class="icon-wrap icon-house" data-idx="0">
+                            <div class="birdhouse"></div>
+                            <div class="birdhouse_holes"></div>
+                        </div>
+                        <div class="icon-wrap icon-ribbon hide" data-idx="1">
+                            <div class="ribbon"></div>
+                        </div>
+                        
+                        <div class="icon-wrap icon-link hide" data-idx="2">
+                            <div class="loopback_l"></div>
+                            <div class="loopback_r"></div>
+                        </div>
+                        
+                        
+                        <div class="icon-wrap icon-me hide" data-idx="3">
+                            <div class="user"></div>
+                            <div class="shoulder"></div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="tips-box hide">
+                    <div class="tips-arrow"></div>
+                    <ul class="tips-inner">
+                        <li>菜单</li>
+                        <li>标签</li>
+                        
+                        <li>友情链接</li>
+                        
+                        
+                        <li>关于我</li>
+                        
+                    </ul>
+                </div>
+            </div>
+        
+
+        <div id="switch-area" class="switch-area">
+            <div class="switch-wrap">
+                <section class="switch-part switch-part1">
+                    <nav class="header-menu">
+                        <ul>
+                        
+                            <li><a href="/">主页</a></li>
+                        
+                            <li><a href="/archives/">所有文章</a></li>
+                        
+                            <li><a href="/tags/">标签云</a></li>
+                        
+                            <li><a href="/about/">关于我</a></li>
+                        
+                        </ul>
+                    </nav>
+                    <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" href="mailto:ykwang@vip.qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" href="https://github.com/wang6237" title="GitHub"></a>
+                            
+                                <a class="fa RSS" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+                    </nav>
+                </section>
+                
+                
+                <section class="switch-part switch-part2">
+                    <div class="widget tagcloud" id="js-tagcloud">
+                        <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Python/">Python</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/json/">json</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/vagrant/">vagrant</a></li></ul>
+                    </div>
+                </section>
+                
+                
+                
+                <section class="switch-part switch-part3">
+                    <div id="js-friends">
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://hexo.io">Hexo</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="https://pages.github.com/">GitHub</a>
+                    
+                      <a class="main-nav-link switch-friends-link" href="http://moxfive.xyz/">MOxFIVE</a>
+                    
+                    </div>
+                </section>
+                
+
+                
+                
+                <section class="switch-part switch-part4">
+                
+                    <div id="js-aboutme">专注于Python</div>
+                </section>
+                
+            </div>
+        </div>
+    </header>                
+</div>
+    </div>
+    <div class="mid-col">
+      <nav id="mobile-nav">
+      <div class="overlay">
+          <div class="slider-trigger"></div>
+          <h1 class="header-author js-mobile-header hide"><a href="/" title="回到主页">Kevin Wang</a></h1>
+      </div>
+    <div class="intrude-less">
+        <header id="header" class="inner">
+            <a href="/" class="profilepic">
+                <img src="/img/avatar.png" class="animated zoomIn">
+            </a>
+            <hgroup>
+              <h1 class="header-author"><a href="/" title="回到主页">Kevin Wang</a></h1>
+            </hgroup>
+            
+            <nav class="header-menu">
+                <ul>
+                
+                    <li><a href="/">主页</a></li>
+                
+                    <li><a href="/archives/">所有文章</a></li>
+                
+                    <li><a href="/tags/">标签云</a></li>
+                
+                    <li><a href="/about/">关于我</a></li>
+                
+                <div class="clearfix"></div>
+                </ul>
+            </nav>
+            <nav class="header-nav">
+                        <ul class="social">
+                            
+                                <a class="fa Email" target="_blank" href="mailto:ykwang@vip.qq.com" title="Email"></a>
+                            
+                                <a class="fa GitHub" target="_blank" href="https://github.com/wang6237" title="GitHub"></a>
+                            
+                                <a class="fa RSS" target="_blank" href="/atom.xml" title="RSS"></a>
+                            
+                        </ul>
+            </nav>
+        </header>                
+    </div>
+    <link class="menu-list" tags="标签" friends="友情链接" about="关于我"/>
+</nav>
+      <div class="body-wrap"><article id="post-python_Django_models" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2016/06/30/python_Django_models/" class="article-date">
+      <time datetime="2016-06-30T08:00:00.000Z" itemprop="datePublished">2016-06-30</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      Django Model 操作
+    </h1>
+  
+
+      </header>
+      
+      <div class="article-info article-info-post">
+        
+    <div class="article-category tagcloud">
+    <a class="article-category-link" href="/categories/Python/">Python</a>
+    </div>
+
+
+        
+    <div class="article-tag tagcloud">
+        <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Python/">Python</a></li></ul>
+    </div>
+
+        <div class="clearfix"></div>
+      </div>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <h1 id="Django-Model-介绍"><a href="#Django-Model-介绍" class="headerlink" title="Django Model 介绍"></a>Django Model 介绍</h1><blockquote>
+<p>一般情况下操作数据库都是先创建数据库、设计表结构和字段；使用MySQLdb来连接数据库，并编写访问数据库的代码；然后业务逻辑层调用访问数据的代码，执行数据操作。而Django为我们提供了一种全新的方式，即关系对象映射(Object Relational Mapping，简称ORM)<br>Django中遵循 Code Frist 的原则，即：根据代码中定义的类来自动生成数据库表。</p>
+</blockquote>
+<a id="more"></a>
+<h1 id="创建表"><a href="#创建表" class="headerlink" title="创建表"></a>创建表</h1><h2 id="基本结构"><a href="#基本结构" class="headerlink" title="基本结构"></a>基本结构</h2><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">hostinfo</span><span class="params">(models.Model)</span>:</span></div><div class="line">    hostname = models.CharField(max_length=<span class="number">30</span>)</div><div class="line">    hostip = models.EmailField()</div><div class="line">    hostservice = models.TextField()</div></pre></td></tr></table></figure>
+<p>更多字段<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div></pre></td><td class="code"><pre><div class="line">models.AutoField　　自增列 = int(11)</div><div class="line">　如果没有的话，默认会生成一个名称为 id 的列，如果要显示的自定义一个自增列，</div><div class="line">  必须将给列设置为主键 primary_key=True。</div><div class="line">models.CharField　　字符串字段</div><div class="line">  必须 max_length 参数</div><div class="line">models.BooleanField　　布尔类型=tinyint(1)</div><div class="line">  不能为空，Blank=True</div><div class="line">models.ComaSeparatedIntegerField　　用逗号分割的数字=varchar</div><div class="line">  继承CharField，所以必须 max_lenght 参数</div><div class="line">models.DateField　　日期类型 date</div><div class="line">  对于参数，auto_now = True 则每次更新都会更新这个时间；auto_now_add</div><div class="line">  则只是第一次创建添加，之后的更新不再改变。</div><div class="line">models.DateTimeField　　日期类型 datetime</div><div class="line">  同DateField的参数</div><div class="line">models.Decimal　　十进制小数类型 = decimal</div><div class="line">  必须指定整数位max_digits和小数位decimal_places</div><div class="line">models.EmailField　　字符串类型（正则表达式邮箱） =varchar</div><div class="line">  对字符串进行正则表达式</div><div class="line">models.FloatField　　浮点类型 = double</div><div class="line">models.IntegerField　　整形</div><div class="line">models.BigIntegerField　　长整形</div><div class="line">integer_field_ranges = &#123;</div><div class="line">　　&apos;SmallIntegerField&apos;: (-32768, 32767),</div><div class="line">　　&apos;IntegerField&apos;: (-2147483648, 2147483647),</div><div class="line">　　&apos;BigIntegerField&apos;: (-9223372036854775808, 9223372036854775807),</div><div class="line">　　&apos;PositiveSmallIntegerField&apos;: (0, 32767),</div><div class="line">　　&apos;PositiveIntegerField&apos;: (0, 2147483647),</div><div class="line">&#125;</div><div class="line">models.IPAddressField　　字符串类型（ip4正则表达式）</div><div class="line">models.GenericIPAddressField　　字符串类型（ip4和ip6是可选的）</div><div class="line">  参数protocol可以是：both、ipv4、ipv6</div><div class="line">  验证时，会根据设置报错</div><div class="line">models.NullBooleanField　　允许为空的布尔类型</div><div class="line">models.PositiveIntegerFiel　　正Integer</div><div class="line">models.PositiveSmallIntegerField　　正smallInteger</div><div class="line">models.SlugField　　减号、下划线、字母、数字</div><div class="line">models.SmallIntegerField　　数字</div><div class="line">  数据库中的字段有：tinyint、smallint、int、bigint</div><div class="line">models.TextField　　字符串=longtext</div><div class="line">models.TimeField　　时间 HH:MM[:ss[.uuuuuu]]</div><div class="line">models.URLField　　字符串，地址正则表达式</div><div class="line">models.BinaryField　　二进制</div><div class="line">models.ImageField   图片</div><div class="line">models.FilePathField 文件</div></pre></td></tr></table></figure></p>
+<p>更多参数<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">null=True</div><div class="line">  数据库中字段是否可以为空</div><div class="line">blank=True</div><div class="line">django的 Admin 中添加数据时是否可允许空值</div><div class="line">primary_key = False</div><div class="line">  主键，对AutoField设置主键后，就会代替原来的自增 id 列</div><div class="line">auto_now 和 auto_now_add</div><div class="line">auto_now   自动创建---无论添加或修改，都是当前操作的时间</div><div class="line">auto_now_add  自动创建---永远是创建时的时间</div><div class="line">choices</div><div class="line">	GENDER_CHOICE = (</div><div class="line">			(u&apos;M&apos;, u&apos;Male&apos;),</div><div class="line">			(u&apos;F&apos;, u&apos;Female&apos;),</div><div class="line">		)</div><div class="line">	gender = models.CharField(max_length=2,choices = GENDER_CHOICE)</div><div class="line">max_length</div><div class="line">default　　默认值</div><div class="line">verbose_name　　Admin中字段的显示名称</div><div class="line">name|db_column　　数据库中的字段名称</div><div class="line">unique=True　　不允许重复</div><div class="line">db_index = True　　数据库索引</div><div class="line">editable=True　　在Admin里是否可编辑</div><div class="line">error_messages=None　　错误提示</div><div class="line">auto_created=False　　自动创建</div><div class="line">help_text　　在Admin中提示帮助信息</div><div class="line">validators=[]</div><div class="line">upload-to</div></pre></td></tr></table></figure></p>
+<h2 id="链表结构"><a href="#链表结构" class="headerlink" title="链表结构"></a>链表结构</h2><ul>
+<li>一对多：models.ForeignKey(其他表)</li>
+<li>多对多：models.ManyToManyField(其他表)</li>
+<li>一对一：models.OneToOneField(其他表)</li>
+</ul>
+<blockquote>
+<p>应用场景：</p>
+<ul>
+<li>一对多：当一张表中创建一行数据时，有一个单选的下拉框（可以被重复选择）<br><em>例如：创建用户信息时候，需要选择一个用户类型【普通用户】【金牌用户】【铂金用户】等。</em></li>
+<li>多对多：在某表中创建一行数据是，有一个可以多选的下拉框<br><em>例如：创建用户信息，需要为用户指定多个爱好</em></li>
+<li>一对一：在某表中创建一行数据时，有一个单选的下拉框（下拉框中的内容被用过一次就消失了<br><em>例如：原有含10列数据的一张表保存相关信息，经过一段时间之后，10列无法满足需求，需要为原来的表再添加5列数据</em></li>
+</ul>
+</blockquote>
+<h1 id="操作表"><a href="#操作表" class="headerlink" title="操作表"></a>操作表</h1><h2 id="基本操作-增、删、改、查"><a href="#基本操作-增、删、改、查" class="headerlink" title="基本操作(增、删、改、查)"></a>基本操作(增、删、改、查)</h2><h3 id="增"><a href="#增" class="headerlink" title="增"></a>增</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">models.Tb1.objects.create(c1=<span class="string">'xx'</span>, c2=<span class="string">'oo'</span>)  </div><div class="line"><span class="comment">#增加一条数据，可以接受字典类型数据 **kwargs</span></div><div class="line"></div><div class="line">obj = models.Tb1(c1=<span class="string">'xx'</span>, c2=<span class="string">'oo'</span>)</div><div class="line">obj.save()</div></pre></td></tr></table></figure>
+<h3 id="查"><a href="#查" class="headerlink" title="查"></a>查</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">models.Tb1.objects.get(id=<span class="number">123</span>)         <span class="comment"># 获取单条数据，不存在则报错（不建议）</span></div><div class="line">models.Tb1.objects.all()               <span class="comment"># 获取全部</span></div><div class="line">models.Tb1.objects.filter(name=<span class="string">'seven'</span>) <span class="comment"># 获取指定条件的数据</span></div></pre></td></tr></table></figure>
+<h3 id="删"><a href="#删" class="headerlink" title="删"></a>删</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">models.Tb1.objects.filter(name=<span class="string">'seven'</span>).delete() <span class="comment"># 删除指定条件的数据</span></div></pre></td></tr></table></figure>
+<h3 id="改"><a href="#改" class="headerlink" title="改"></a>改</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">models.Tb1.objects.filter(name=<span class="string">'seven'</span>).update(gender=<span class="string">'0'</span>)</div><div class="line"><span class="comment"># 将指定条件的数据更新，均支持 **kwargs</span></div><div class="line">obj = models.Tb1.objects.get(id=<span class="number">1</span>)</div><div class="line">obj.c1 = <span class="string">'111'</span></div><div class="line">obj.save()                                                 <span class="comment"># 修改单条数据</span></div></pre></td></tr></table></figure>
+<h2 id="进阶操作-了不起的双下划线"><a href="#进阶操作-了不起的双下划线" class="headerlink" title="进阶操作(了不起的双下划线)"></a>进阶操作(了不起的双下划线)</h2><blockquote>
+<p>利用双下划线将字段和对应的操作连接起来</p>
+</blockquote>
+<h3 id="获取个数"><a href="#获取个数" class="headerlink" title="获取个数"></a>获取个数</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">models.UserInfo.objects.filter(name=<span class="string">'kevin'</span>).count()</div></pre></td></tr></table></figure>
+<h3 id="大于小于"><a href="#大于小于" class="headerlink" title="大于小于"></a>大于小于</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">models.UserInfo.objects.filter(id__lt=<span class="number">10</span>)  <span class="comment"># 获取id小于10的值</span></div><div class="line">models.UserInfo.objects.filter(id__gt=<span class="number">3</span>)   <span class="comment"># 获取id大于3的值</span></div><div class="line">models.UserInfo.objects.filter(id_lt=<span class="number">10</span>, id__gt=<span class="number">3</span>) <span class="comment"># 获取 id大于3，且小于10的值</span></div></pre></td></tr></table></figure>
+<h3 id="in"><a href="#in" class="headerlink" title="in"></a>in</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">models.UserInfo.objects.filter(id__in=[<span class="number">11</span>,<span class="number">22</span>,<span class="number">33</span>])  <span class="comment"># 获取id 等于11、22、33的值</span></div><div class="line">models.UserInfo.objects.exclude(id__in=[<span class="number">11</span>,<span class="number">22</span>,<span class="number">33</span>]) <span class="comment"># 获取id不等于 11、22、33的值，相当于 not in</span></div></pre></td></tr></table></figure>
+<h3 id="contains"><a href="#contains" class="headerlink" title="contains"></a>contains</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#</span></div><div class="line">models.UserInfo.objects.filter(name__contains=<span class="string">"ven"</span>)</div><div class="line">models.UserInfo.objects.filter(name__icontains=<span class="string">"ven"</span>) <span class="comment"># icontains大小写不敏感</span></div><div class="line">models.UserInfo.objects.exclude(name__icontains=<span class="string">"ven"</span>)</div></pre></td></tr></table></figure>
+<h3 id="range"><a href="#range" class="headerlink" title="range"></a>range</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">models.UserInfo.objects.filter(id__range=[<span class="number">1</span>, <span class="number">2</span>])   <span class="comment"># 范围bettwen and</span></div></pre></td></tr></table></figure>
+<h3 id="其他类似"><a href="#其他类似" class="headerlink" title="其他类似"></a>其他类似</h3><blockquote>
+<p>startswith，istartswith, endswith, iendswith,</p>
+</blockquote>
+<h3 id="order-by"><a href="#order-by" class="headerlink" title="order by"></a>order by</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">models.UserInfo.objects.filter(name=<span class="string">'kevin'</span>).order_by(<span class="string">'id'</span>)    <span class="comment"># asc</span></div><div class="line">models.UserInfo.objects.filter(name=<span class="string">'kevin'</span>).order_by(<span class="string">'-id'</span>)   <span class="comment"># desc</span></div></pre></td></tr></table></figure>
+<h3 id="limit-、offset"><a href="#limit-、offset" class="headerlink" title="limit 、offset"></a>limit 、offset</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">models.UserInfo.objects.all()[<span class="number">10</span>:<span class="number">20</span>]</div></pre></td></tr></table></figure>
+<h3 id="group-by"><a href="#group-by" class="headerlink" title="group by"></a>group by</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> django.db.models <span class="keyword">import</span> Count, Min, Max, Sum</div><div class="line">models.Tb1.objects.filter(c1=<span class="number">1</span>).values(<span class="string">'id'</span>).annotate(c=Count(<span class="string">'num'</span>))</div><div class="line">SELECT <span class="string">"app01_UserInfo"</span>.<span class="string">"id"</span>, COUNT(<span class="string">"app01_UserInfo"</span>.<span class="string">"num"</span>) AS <span class="string">"c"</span> FROM <span class="string">"app01_UserInfo"</span> WHERE <span class="string">"app01_UserInfo"</span>.<span class="string">"c1"</span> = <span class="number">1</span> GROUP BY <span class="string">"app01_UserInfo"</span>.<span class="string">"id"</span></div></pre></td></tr></table></figure>
+<h2 id="链表操作-了不起的双下划线"><a href="#链表操作-了不起的双下划线" class="headerlink" title="链表操作(了不起的双下划线)"></a>链表操作(了不起的双下划线)</h2><blockquote>
+<p>利用双下划线和_set将表之间的操作连接起来,</p>
+</blockquote>
+<h3 id="表结构实例"><a href="#表结构实例" class="headerlink" title="表结构实例"></a>表结构实例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">from</span> __future__ <span class="keyword">import</span> unicode_literals</div><div class="line"><span class="keyword">from</span> django.db <span class="keyword">import</span> models</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserProfile</span><span class="params">(models.Model)</span>:</span></div><div class="line">    user_info = models.OneToOneField(<span class="string">'UserInfo'</span>)</div><div class="line">    username = models.CharField(max_length=<span class="number">32</span>)</div><div class="line">    password = models.CharField(max_length=<span class="number">32</span>)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__unicode__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.username</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserInfo</span><span class="params">(models.Model)</span>:</span></div><div class="line">    user_type_choice = (</div><div class="line">    (<span class="number">0</span>,<span class="string">u'普通用户'</span>),</div><div class="line">    (<span class="number">1</span>,<span class="string">u'高级用户'</span>),</div><div class="line">    )</div><div class="line">    user_type = models.IntegerField(choices = user_type_choice)</div><div class="line">    name = models.CharField(max_length=<span class="number">32</span>)</div><div class="line">    email = models.CharField(max_length=<span class="number">32</span>)</div><div class="line">    address = models.CharField(max_length=<span class="number">128</span>)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__unicode__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.name</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserGroup</span><span class="params">(models.Model)</span>:</span></div><div class="line">    caption = models.CharField(max_length=<span class="number">64</span>)</div><div class="line">    user_info = models.ManyToManyField(<span class="string">'UserInfo'</span>)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__unicode__</span><span class="params">(self)</span>:</span></div><div class="line">        <span class="keyword">return</span> self.caption</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Host</span><span class="params">(models.Model)</span>:</span></div><div class="line">    hostname = models.CharField(max_length=<span class="number">64</span>)</div><div class="line">    ip = models.GenericIPAddressField()</div><div class="line">    user_group = models.ForeignKey(<span class="string">'UserGroup'</span>)</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__unicode__</span><span class="params">(self)</span>:</span></div><div class="line">        self.hostname</div></pre></td></tr></table></figure>
+<h3 id="一对一操作"><a href="#一对一操作" class="headerlink" title="一对一操作"></a>一对一操作</h3><blockquote>
+<p>通过filter过滤加上条件，就可以找到精确的值。</p>
+</blockquote>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">user_info_data = models.UserInfo.objects.filter(id=<span class="number">1</span>).first()</div><div class="line"><span class="keyword">print</span> user_info_data.user_type</div><div class="line"><span class="keyword">print</span> user_info_data.get_user_type_display()</div><div class="line"><span class="keyword">print</span> user_info_data.userprofile.password</div><div class="line"></div><div class="line"></div><div class="line">user_info_obj = models.UserInfo.objects.filter(id=<span class="number">1</span>).values(<span class="string">'email'</span>, <span class="string">'userprofile__username'</span>).first()</div><div class="line"><span class="keyword">print</span> user_info_obj.keys()</div><div class="line"><span class="keyword">print</span> user_info_obj.values()</div></pre></td></tr></table></figure>
+<h3 id="一对多操作"><a href="#一对多操作" class="headerlink" title="一对多操作"></a>一对多操作</h3><blockquote>
+<p>通过ForeignKey关联另外一张表，斌企鹅Django会在此表中生成一个_id结尾的字段，并且搜索条件时可以通过__连接，获取值时可以通过.连接</p>
+</blockquote>
+
+      
+    </div>
+    
+  </div>
+  
+    
+    <div class="copyright">
+        <p><span>本文标题:</span><a href="/2016/06/30/python_Django_models/">Django Model 操作</a></p>
+        <p><span>文章作者:</span><a href="/" title="回到主页">Kevin Wang</a></p>
+        <p><span>发布时间:</span>2016-06-30, 16:00:00</p>
+        <p><span>最后更新:</span>2016-08-02, 18:28:38</p>
+        <p>
+            <span>原始链接:</span><a class="post-url" href="/2016/06/30/python_Django_models/" title="Django Model 操作">http://www.z210.me/2016/06/30/python_Django_models/</a>
+            <span class="copy-path" data-clipboard-text="原文: http://www.z210.me/2016/06/30/python_Django_models/　　作者: Kevin Wang" title="点击复制文章链接"><i class="fa fa-clipboard"></i></span>
+            <script> var clipboard = new Clipboard('.copy-path'); </script>
+        </p>
+        <p>
+            <span>许可协议:</span><i class="fa fa-creative-commons"></i> <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/" title="CC BY-NC-SA 4.0 International" target = "_blank">"署名-非商用-相同方式共享 4.0"</a> 转载请保留原文链接及作者。
+        </p>
+    </div>
+
+
+
+    <nav id="article-nav">
+        
+            <div id="article-nav-newer" class="article-nav-title">
+                <a href="/2016/08/04/json_jsonp/">
+                    JSON和JSONP
+                </a>
+            </div>
+        
+        
+            <div id="article-nav-older" class="article-nav-title">
+                <a href="/2016/06/25/vagrant_settings/">
+                    vagrant 配置HOST 与虚拟机多路径同步
+                </a>
+            </div>
+        
+    </nav>
+
+  
+</article>
+
+    <div id="toc" class="toc-article">
+        <strong class="toc-title">文章目录</strong>
+        
+            <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Django-Model-介绍"><span class="toc-number">1.</span> <span class="toc-text">Django Model 介绍</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#创建表"><span class="toc-number">2.</span> <span class="toc-text">创建表</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本结构"><span class="toc-number">2.1.</span> <span class="toc-text">基本结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#链表结构"><span class="toc-number">2.2.</span> <span class="toc-text">链表结构</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#操作表"><span class="toc-number">3.</span> <span class="toc-text">操作表</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本操作-增、删、改、查"><span class="toc-number">3.1.</span> <span class="toc-text">基本操作(增、删、改、查)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#增"><span class="toc-number">3.1.1.</span> <span class="toc-text">增</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#查"><span class="toc-number">3.1.2.</span> <span class="toc-text">查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#删"><span class="toc-number">3.1.3.</span> <span class="toc-text">删</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#改"><span class="toc-number">3.1.4.</span> <span class="toc-text">改</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#进阶操作-了不起的双下划线"><span class="toc-number">3.2.</span> <span class="toc-text">进阶操作(了不起的双下划线)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#获取个数"><span class="toc-number">3.2.1.</span> <span class="toc-text">获取个数</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#大于小于"><span class="toc-number">3.2.2.</span> <span class="toc-text">大于小于</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#in"><span class="toc-number">3.2.3.</span> <span class="toc-text">in</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#contains"><span class="toc-number">3.2.4.</span> <span class="toc-text">contains</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#range"><span class="toc-number">3.2.5.</span> <span class="toc-text">range</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#其他类似"><span class="toc-number">3.2.6.</span> <span class="toc-text">其他类似</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#order-by"><span class="toc-number">3.2.7.</span> <span class="toc-text">order by</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#limit-、offset"><span class="toc-number">3.2.8.</span> <span class="toc-text">limit 、offset</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#group-by"><span class="toc-number">3.2.9.</span> <span class="toc-text">group by</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#链表操作-了不起的双下划线"><span class="toc-number">3.3.</span> <span class="toc-text">链表操作(了不起的双下划线)</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#表结构实例"><span class="toc-number">3.3.1.</span> <span class="toc-text">表结构实例</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一对一操作"><span class="toc-number">3.3.2.</span> <span class="toc-text">一对一操作</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#一对多操作"><span class="toc-number">3.3.3.</span> <span class="toc-text">一对多操作</span></a></li></ol></li></ol></li></ol>
+        
+    </div>
+    <style>
+        .left-col .switch-btn,
+        .left-col .switch-area {
+            display: none;
+        }
+        .toc-level-3 i,
+        .toc-level-3 ol {
+            display: none !important;
+        }
+    </style>
+
+    <input type="button" id="tocButton" value="隐藏目录"  title="点击按钮隐藏或者显示文章目录">
+
+    <script>
+        yiliaConfig.toc = ["隐藏目录", "显示目录", !!"false"];
+    </script>
+
+
+
+    
+<div class="share">
+    
+        <div class="bdsharebuttonbox">
+            <a href="#" class="fa fa-twitter bds_twi" data-cmd="twi" title="分享到推特"></a>
+            <a href="#" class="fa fa-weibo bds_tsina" data-cmd="tsina" title="分享到新浪微博"></a>
+            <a href="#" class="fa fa-qq bds_sqq" data-cmd="sqq" title="分享给 QQ 好友"></a>
+            <a href="#" class="fa fa-files-o bds_copy" data-cmd="copy" title="复制网址"></a>
+            <a href="#" class="fa fa fa-envelope-o bds_mail" data-cmd="mail" title="通过邮件分享"></a>
+            <a href="#" class="fa fa-weixin bds_weixin" data-cmd="weixin" title="生成文章二维码"></a>
+            <a href="#" class="fa fa-share-alt bds_more" data-cmd="more"></i></a>
+        </div>
+        <script>
+            window._bd_share_config={
+                "common":{"bdSnsKey":{},"bdText":"Django Model 操作　| 记录点滴　","bdMini":"2","bdMiniList":false,"bdPic":"","bdStyle":"0","bdSize":"24"},"share":{}};with(document)0[(getElementsByTagName('head')[0]||body).appendChild(createElement('script')).src='http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion='+~(-new Date()/36e5)];
+        </script>
+    
+
+    
+</div>
+
+
+
+
+
+
+
+    
+
+
+
+
+    <div class="scroll" id="post-nav-button">
+        
+            <a href="/2016/08/04/json_jsonp/" title="上一篇: JSON和JSONP">
+                <i class="fa fa-angle-left"></i>
+            </a>
+        
+
+        <a title="文章列表"><i class="fa fa-bars"></i><i class="fa fa-times"></i></a>
+
+        
+            <a href="/2016/06/25/vagrant_settings/" title="下一篇: vagrant 配置HOST 与虚拟机多路径同步">
+                <i class="fa fa-angle-right"></i>
+            </a>
+        
+    </div>
+
+    <ul class="post-list"><li class="post-list-item"><a class="post-list-link" href="/2016/08/04/json_jsonp/">JSON和JSONP</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/30/python_Django_models/">Django Model 操作</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/06/25/vagrant_settings/">vagrant 配置HOST 与虚拟机多路径同步</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/20/python_016/">Django 入门</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/05/07/python_003/">自定义Session</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/30/python_002/">Python 入门和介绍</a></li><li class="post-list-item"><a class="post-list-link" href="/2016/04/20/hello-world/">Hello World</a></li></ul>
+
+
+
+
+    <script>
+        
+    </script>
+</div>
+      <footer id="footer">
+    <div class="outer">
+        <div id="footer-info">
+            <div class="footer-left">
+                <i class="fa fa-copyright"></i> 
+                2016 Kevin Wang
+            </div>
+            <div class="footer-right">
+                <a href="http://hexo.io/" target="_blank" title="快速、简洁且高效的博客框架">Hexo</a>  Theme <a href="https://github.com/MOxFIVE/hexo-theme-yelee" target="_blank" title="简而不减 Hexo 双栏博客主题  v3.5">Yelee</a> by MOxFIVE <i class="fa fa-heart animated infinite pulse"></i>
+            </div>
+        </div>
+        
+            <div class="visit">
+                
+                    <span id="busuanzi_container_site_pv" style='display:none'>
+                        <span id="site-visit" title="本站到访数"><i class="fa fa-user" aria-hidden="true"></i><span id="busuanzi_value_site_uv"></span>
+                        </span>
+                    </span>
+                
+                
+                    <span>| </span>
+                
+                
+                    <span id="busuanzi_container_page_pv" style='display:none'>
+                        <span id="page-visit"  title="本页阅读量"><i class="fa fa-eye animated infinite pulse" aria-hidden="true"></i><span id="busuanzi_value_page_pv"></span>
+                        </span>
+                    </span>
+                
+            </div>
+        
+    </div>
+</footer>
+    </div>
+    
+<script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            var iPad = window.navigator.userAgent.indexOf('iPad');
+            if (iPad > -1 || $(".left-col").css("display") === "none") {
+                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
+                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
+                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
+            }
+            else {
+                var backgroundnum = 5;
+                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
+                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
+            }
+        })
+    </script>
+
+
+
+
+
+<div class="scroll" id="scroll">
+    <a href="#" title="返回顶部"><i class="fa fa-arrow-up"></i></a>
+    <a href="#comments" onclick="load$hide();" title="查看评论"><i class="fa fa-comments-o"></i></a>
+    <a href="#footer" title="转到底部"><i class="fa fa-arrow-down"></i></a>
+</div>
+<script>
+    // Open in New Window
+    
+        var oOpenInNew = {
+            
+            
+            
+            
+            
+            
+             archives: ".archive-article-title", 
+             miniArchives: "a.post-list-link", 
+            
+             friends: "#js-friends a", 
+             socail: ".social a" 
+        }
+        for (var x in oOpenInNew) {
+            $(oOpenInNew[x]).attr("target", "_blank");
+        }
+    
+</script>
+
+<script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js">
+</script>
+  </div>
+</body>
+</html>
