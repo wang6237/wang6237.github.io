@@ -1,0 +1,661 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Linux," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="Linux Mint 的使用笔记安装首先，要从官方网站上下载最新的iso文件，然后再将iso文件写入光盘或者U盘, 然后安装就行了，这里就不在多说了。
+
+Linux Mint官方网站 使用U盘安装，你可能需要这个工具Universal-USB-Installer">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux Mint 的使用笔记">
+<meta property="og:url" content="http://www.z210.me/2016/08/30/Linux_Minit_Note/index.html">
+<meta property="og:site_name" content="记录点滴">
+<meta property="og:description" content="Linux Mint 的使用笔记安装首先，要从官方网站上下载最新的iso文件，然后再将iso文件写入光盘或者U盘, 然后安装就行了，这里就不在多说了。
+
+Linux Mint官方网站 使用U盘安装，你可能需要这个工具Universal-USB-Installer">
+<meta property="og:image" content="http://www.z210.me/uploads/apt-source-1.png">
+<meta property="og:image" content="http://www.z210.me/uploads/apt-source-2.png">
+<meta property="og:image" content="http://www.z210.me/uploads/apt-source-3.png">
+<meta property="og:image" content="http://www.z210.me/uploads/numix-1.png">
+<meta property="og:image" content="https://camo.githubusercontent.com/b50d6feac1815cdd43f9f246eb4ce5c671d6c1c1/687474703a2f2f692e696d6775722e636f6d2f365563694f4f4b2e706e67">
+<meta property="og:image" content="https://camo.githubusercontent.com/7f21a8ab158725c5b334da910f305a532cb0c1cb/687474703a2f2f692e696d6775722e636f6d2f383071435a47512e706e67">
+<meta property="og:image" content="http://www.z210.me/uploads/flat-1.png">
+<meta property="og:image" content="http://www.z210.me/uploads/flat-2.png">
+<meta property="og:updated_time" content="2016-08-30T09:59:51.111Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Linux Mint 的使用笔记">
+<meta name="twitter:description" content="Linux Mint 的使用笔记安装首先，要从官方网站上下载最新的iso文件，然后再将iso文件写入光盘或者U盘, 然后安装就行了，这里就不在多说了。
+
+Linux Mint官方网站 使用U盘安装，你可能需要这个工具Universal-USB-Installer">
+<meta name="twitter:image" content="http://www.z210.me/uploads/apt-source-1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://www.z210.me/2016/08/30/Linux_Minit_Note/"/>
+
+  <title> Linux Mint 的使用笔记 | 记录点滴 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">记录点滴</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Linux Mint 的使用笔记
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-08-30T16:00:00+08:00" content="2016-08-30">
+              2016-08-30
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Linux/" itemprop="url" rel="index">
+                    <span itemprop="name">Linux</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="Linux-Mint-的使用笔记"><a href="#Linux-Mint-的使用笔记" class="headerlink" title="Linux Mint 的使用笔记"></a>Linux Mint 的使用笔记</h1><h2 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h2><p>首先，要从官方网站上下载最新的iso文件，然后再将iso文件写入光盘或者U盘, 然后安装就行了，这里就不在多说了。</p>
+<blockquote>
+<p><a href="https://www.linuxmint.com/" target="_blank" rel="external">Linux Mint官方网站</a><br> 使用U盘安装，你可能需要这个工具<a href="http://www.pendrivelinux.com/universal-usb-installer-easy-as-1-2-3/" target="_blank" rel="external">Universal-USB-Installer</a></p>
+</blockquote>
+<a id="more"></a>
+<h2 id="Mint的优化"><a href="#Mint的优化" class="headerlink" title="Mint的优化"></a>Mint的优化</h2><h3 id="软件源的选择"><a href="#软件源的选择" class="headerlink" title="软件源的选择"></a>软件源的选择</h3><p>通过系统的软件源可以更改  “菜单”&gt;&gt;&gt; “系统管理”&gt;&gt;&gt; “软件源”&gt;&gt;&gt; “官方仓库”&gt;&gt;&gt; “镜像”，工具自身会测试所有的节点，你只要选择最快的即可。<br>软件源<br><img src="/uploads/apt-source-1.png" alt="软件源"><br>官方仓库<br><img src="/uploads/apt-source-2.png" alt="官方仓库"><br>选择速度快的镜像<br><img src="/uploads/apt-source-3.png" alt="镜像"></p>
+<h3 id="更新系统"><a href="#更新系统" class="headerlink" title="更新系统"></a>更新系统</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt update</div><div class="line">sudo apt upgrade -y</div></pre></td></tr></table></figure>
+<h3 id="主题与图标"><a href="#主题与图标" class="headerlink" title="主题与图标"></a>主题与图标</h3><h4 id="安装旧的壁纸"><a href="#安装旧的壁纸" class="headerlink" title="安装旧的壁纸"></a>安装旧的壁纸</h4><p>每个Linux Mint发行版都自带了一套最新的漂亮的壁纸。但是，你也可以安装先前版本中的壁纸。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install mint-backgrounds-*</div></pre></td></tr></table></figure></p>
+<h4 id="安装Numix主题"><a href="#安装Numix主题" class="headerlink" title="安装Numix主题"></a>安装Numix主题</h4><p>我们将使用 Numix 的官方 PPA 来进行安装，先打开 终端 使用如下命令安装 Numix 主题和图标：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo add-apt-repository ppa:numix/ppa</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install numix-gtk-theme numix-icon-theme-circle</div></pre></td></tr></table></figure></p>
+<p><img src="/uploads/numix-1.png" alt=""></p>
+<p>如果想安装 Numix 桌面壁纸，可使用如下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install numix-wallpaper-*</div></pre></td></tr></table></figure></p>
+<h4 id="安装flatabulous主题"><a href="#安装flatabulous主题" class="headerlink" title="安装flatabulous主题"></a>安装flatabulous主题</h4><p><img src="https://camo.githubusercontent.com/b50d6feac1815cdd43f9f246eb4ce5c671d6c1c1/687474703a2f2f692e696d6775722e636f6d2f365563694f4f4b2e706e67" alt="flatabulous"></p>
+<ul>
+<li><p>通过deb包来安装 适用  Debian, Ubuntu 等<br>可以从<a href="https://github.com/anmoljagetia/Flatabulous/releases/latest" target="_blank" rel="external">此处</a>下载</p>
+</li>
+<li><p>可以通过PPA来安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo add-apt-repository ppa:noobslab/themes</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install flatabulous-theme</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><img src="https://camo.githubusercontent.com/7f21a8ab158725c5b334da910f305a532cb0c1cb/687474703a2f2f692e696d6775722e636f6d2f383071435a47512e706e67" alt=""></p>
+<ul>
+<li><p>安装icons</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo add-apt-repository ppa:noobslab/icons </div><div class="line">sudo apt-get update </div><div class="line">sudo apt-get install ultra-flat-icons</div></pre></td></tr></table></figure>
+</li>
+<li><p>截图<br><img src="/uploads/flat-1.png" alt=""><br><img src="/uploads/flat-2.png" alt=""></p>
+</li>
+</ul>
+<h3 id="多安装些浏览器"><a href="#多安装些浏览器" class="headerlink" title="多安装些浏览器"></a>多安装些浏览器</h3><p>Linux Mint 18默认安装了firefox，你也可以获得更多的浏览器，如Chronium和Google Chrome。</p>
+<p>Chronium浏览器可以在仓库中获取。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install chromium-browser</div></pre></td></tr></table></figure></p>
+<p>至于Google Chrome，请访问google.com/chrome下载deb包，并使用gdebi来安装。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># 64 位</div><div class="line">$ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb</div><div class="line">$ sudo gdebi google-chrome-stable_current_amd64.deb</div><div class="line"> </div><div class="line"># 32 位</div><div class="line">$ wget https://dl.google.com/linux/direct/google-chrome-stable_current_i386.deb</div><div class="line">$ sudo gdebi google-chrome-stable_current_i386.deb</div></pre></td></tr></table></figure></p>
+<h3 id="安装rar和其它归档工具"><a href="#安装rar和其它归档工具" class="headerlink" title="安装rar和其它归档工具"></a>安装rar和其它归档工具</h3><p>要想在Nemo这样的文件管理器中通过上下文菜单创建rar归档，请安装rar工具。安装rar的同时，也可安装其它几个包以增加对其它归档格式的支持。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install unace p7zip-rar sharutils rar arj lunzip lzip</div></pre></td></tr></table></figure></p>
+<h3 id="安装搜狗输入法"><a href="#安装搜狗输入法" class="headerlink" title="安装搜狗输入法"></a>安装搜狗输入法</h3><p>访问搜狗pinyin的网站 <a href="http://pinyin.sogou.com/linux/" target="_blank" rel="external">http://pinyin.sogou.com/linux/</a> ，下载最新的deb包。双击安装即可</p>
+<h3 id="安装网易云音乐"><a href="#安装网易云音乐" class="headerlink" title="安装网易云音乐"></a>安装网易云音乐</h3><p>访问网易云音乐的站点 <a href="http://music.163.com/#/download" target="_blank" rel="external">http://music.163.com/#/download</a> 下载最新的linux的版本即可。</p>
+<h3 id="安装-meta界面"><a href="#安装-meta界面" class="headerlink" title="安装 meta界面"></a>安装 meta界面</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install mint-meta-mate</div></pre></td></tr></table></figure>
+<p>这样注销后重新登陆的时候就可以选择mate了</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Linux/" rel="tag">#Linux</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/08/29/use-taobao-npm-registry/" rel="next" title="使用淘宝NPM镜像">
+                <i class="fa fa-chevron-left"></i> 使用淘宝NPM镜像
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="wang6237" />
+          <p class="site-author-name" itemprop="name">wang6237</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">10</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wang6237" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Linux-Mint-的使用笔记"><span class="nav-number">1.</span> <span class="nav-text">Linux Mint 的使用笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#安装"><span class="nav-number">1.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mint的优化"><span class="nav-number">1.2.</span> <span class="nav-text">Mint的优化</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#软件源的选择"><span class="nav-number">1.2.1.</span> <span class="nav-text">软件源的选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#更新系统"><span class="nav-number">1.2.2.</span> <span class="nav-text">更新系统</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主题与图标"><span class="nav-number">1.2.3.</span> <span class="nav-text">主题与图标</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装旧的壁纸"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">安装旧的壁纸</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装Numix主题"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">安装Numix主题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#安装flatabulous主题"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">安装flatabulous主题</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多安装些浏览器"><span class="nav-number">1.2.4.</span> <span class="nav-text">多安装些浏览器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装rar和其它归档工具"><span class="nav-number">1.2.5.</span> <span class="nav-text">安装rar和其它归档工具</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装搜狗输入法"><span class="nav-number">1.2.6.</span> <span class="nav-text">安装搜狗输入法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装网易云音乐"><span class="nav-number">1.2.7.</span> <span class="nav-text">安装网易云音乐</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#安装-meta界面"><span class="nav-number">1.2.8.</span> <span class="nav-text">安装 meta界面</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wang6237</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
