@@ -1,0 +1,678 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="openstack," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="openstack 使用自定义镜像在使用openstack的时候创建镜像是非常常见的，大部分使用官方的方法就可以了
+使用官方推荐的方法，请看官方文档">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenStack Create Images Manually">
+<meta property="og:url" content="http://www.z210.me/2016/09/20/use-virtualbox-convert-to-qcow2/index.html">
+<meta property="og:site_name" content="记录点滴">
+<meta property="og:description" content="openstack 使用自定义镜像在使用openstack的时候创建镜像是非常常见的，大部分使用官方的方法就可以了
+使用官方推荐的方法，请看官方文档">
+<meta property="og:updated_time" content="2016-09-21T07:13:22.250Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="OpenStack Create Images Manually">
+<meta name="twitter:description" content="openstack 使用自定义镜像在使用openstack的时候创建镜像是非常常见的，大部分使用官方的方法就可以了
+使用官方推荐的方法，请看官方文档">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://www.z210.me/2016/09/20/use-virtualbox-convert-to-qcow2/"/>
+
+  <title> OpenStack Create Images Manually | 记录点滴 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">记录点滴</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                OpenStack Create Images Manually
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2016-09-20T16:00:00+08:00" content="2016-09-20">
+              2016-09-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/openstack/" itemprop="url" rel="index">
+                    <span itemprop="name">openstack</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="openstack-使用自定义镜像"><a href="#openstack-使用自定义镜像" class="headerlink" title="openstack 使用自定义镜像"></a>openstack 使用自定义镜像</h1><p>在使用openstack的时候创建镜像是非常常见的，大部分使用官方的方法就可以了</p>
+<p>使用官方推荐的方法，请看<a href="http://docs.openstack.org/image-guide/create-images-manually.html" target="_blank" rel="external">官方文档</a><br><a id="more"></a></p>
+<h2 id="利用VirtualBox转换镜像"><a href="#利用VirtualBox转换镜像" class="headerlink" title="利用VirtualBox转换镜像"></a>利用VirtualBox转换镜像</h2><p>利用qemu将其他格式的转成img格式，再将img格式转换成qcow2格式</p>
+<p>第一步：用virtualBox创建一个centos7的虚拟机，使用<a href="http://mirrors.163.com/centos/7/isos/x86_64/CentOS-7-x86_64-DVD-1511.iso" target="_blank" rel="external">CentOS-7-x86_64-DVD-1511.iso</a>。<br>第二步：把该安装的软件都安装好，然后停止vm<br>第三步：VBoxManage 将转换镜像。命令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">VBoxManage clonehd centos7.vdi centos7-mini.img --format raw</div></pre></td></tr></table></figure></p>
+<p>第四步：将img格式的镜像上传到服务器上，在使用命令转换成qcow2格式。命令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">qemu-img convert -f raw centos7-mini.img -O qcow2 centos7-mini2.img</div></pre></td></tr></table></figure></p>
+<p>第五步：上传到glance。 命令如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">openstack image create &quot;centos7-x64&quot;   --file /opt/centos7-mini2.img   --disk-format qcow2 --container-format bare   --public</div></pre></td></tr></table></figure></p>
+<p><a href="http://docs.openstack.org/image-guide/convert-images.html#vboxmanage-vdi-virtualbox-to-raw" target="_blank" rel="external">官方文档</a> </p>
+<h3 id="qemu-img-convert-raw-qcow2-qed-vdi-vmdk-vhd¶"><a href="#qemu-img-convert-raw-qcow2-qed-vdi-vmdk-vhd¶" class="headerlink" title="qemu-img convert: raw, qcow2, qed, vdi, vmdk, vhd¶"></a>qemu-img convert: raw, qcow2, qed, vdi, vmdk, vhd¶</h3><p>The qemu-img convert command can do conversion between multiple formats, including qcow2, qed, raw, vdi, vhd, and vmdk.</p>
+<p>qemu-img format strings</p>
+<table>
+<thead>
+<tr>
+<th>Image format</th>
+<th>Argument to qemu-img</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>QCOW2 (KVM, Xen)</td>
+<td>qcow2</td>
+</tr>
+<tr>
+<td>QED (KVM)</td>
+<td>qed</td>
+</tr>
+<tr>
+<td>raw</td>
+<td>raw</td>
+</tr>
+<tr>
+<td>VDI (VirtualBox)</td>
+<td>vdi</td>
+</tr>
+<tr>
+<td>VHD (Hyper-V)</td>
+<td>vpc</td>
+</tr>
+<tr>
+<td>VMDK (VMware)</td>
+<td>vmdk</td>
+</tr>
+</tbody>
+</table>
+<p>This example will convert a raw image file named image.img to a qcow2 image file.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ qemu-img convert -f raw -O qcow2 image.img image.qcow2</div></pre></td></tr></table></figure></p>
+<p>Run the following command to convert a vmdk image file to a raw image file.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ qemu-img convert -f vmdk -O raw image.vmdk image.img</div></pre></td></tr></table></figure></p>
+<p>Run the following command to convert a vmdk image file to a qcow2 image file.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ qemu-img convert -f vmdk -O qcow2 image.vmdk image.qcow2</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>Note<br>The -f format flag is optional. If omitted, qemu-img will try to infer the image format.</p>
+<p>When converting an image file with Windows, ensure the virtio driver is installed. Otherwise, you will get a blue screen when launching the image due to lack of the virtio driver. Another option is to set the image properties as below when you update the image in the Image service to avoid this issue, but it will reduce virtual machine performance significantly.</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ openstack image set --property hw_disk_bus=&apos;ide&apos; image_name_or_id</div></pre></td></tr></table></figure>
+<p>VBoxManage: VDI (VirtualBox) to raw¶</p>
+<p>If you’ve created a VDI image using VirtualBox, you can convert it to raw format using the VBoxManage command-line tool that ships with VirtualBox. On Mac OS X, and Linux, VirtualBox stores images by default in the ~/VirtualBox VMs/ directory. The following example creates a raw image in the current directory from a VirtualBox VDI image.<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ VBoxManage clonehd ~/VirtualBox\ VMs/image.vdi image.img --format raw</div></pre></td></tr></table></figure></p>
+<h3 id="用OZ工具制作openstack镜像"><a href="#用OZ工具制作openstack镜像" class="headerlink" title="用OZ工具制作openstack镜像"></a>用OZ工具制作openstack镜像</h3><p>首先下载iso镜像，这里下载了centos6.5镜像，放到/usr/local/src目录下<br>然后用OZ工具制作openstack的镜像<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">[root@openstack-server src]#yum install -y oz libguestfs-tools</div><div class="line"></div><div class="line">[root@openstack-server src]# pwd</div><div class="line">/usr/local/src</div><div class="line">[root@openstack-server src]# ll CentOS-6.5-x86_64-bin-DVD1.iso #下载的iso镜像</div><div class="line">-rw-r--r--. 1 root root 4467982336 Nov 29 2013 CentOS-6.5-x86_64-bin-DVD1.iso</div><div class="line">[root@openstack-server src]# cat CentOS6u5-x86_64.tdl #创建tdl 文件</div><div class="line">&lt;template&gt;</div><div class="line">&lt;name&gt;CentOS6u5-x86_64&lt;/name&gt;</div><div class="line">&lt;description&gt;CentOS6u5-x86_64 template&lt;/description&gt;</div><div class="line">&lt;os&gt;</div><div class="line">&lt;name&gt;CentOS-6&lt;/name&gt;</div><div class="line">&lt;version&gt;5&lt;/version&gt;</div><div class="line">&lt;arch&gt;x86_64&lt;/arch&gt;</div><div class="line">&lt;rootpw&gt;PASSWORD&lt;/rootpw&gt;                                                                #这个是虚拟机创建好后，root的登陆密码，密码是在这个镜像里定义的！</div><div class="line">&lt;install type=&apos;iso&apos;&gt;</div><div class="line">&lt;iso&gt;file:///usr/local/src/CentOS-6.5-x86_64-bin-DVD1.iso&lt;/iso&gt;</div><div class="line">&lt;/install&gt;</div><div class="line">&lt;/os&gt;</div><div class="line">&lt;commands&gt;                                                                                        #centos7系统里没有/boot/grub/grub.conf文件，这块可以不用写，但写了也无妨。这里我是centos7，也写了</div><div class="line">&lt;command name=&apos;console&apos;&gt;</div><div class="line">sed -i &apos;s/ rhgb//g&apos; /boot/grub/grub.conf</div><div class="line">sed -i &apos;s/ quiet//g&apos; /boot/grub/grub.conf</div><div class="line">sed -i &apos;s/ console=tty0 / serial=tty0 console=ttyS0,115200n8 /g&apos; /boot/grub/grub.conf</div><div class="line">&lt;/command&gt;</div><div class="line">&lt;/commands&gt;</div><div class="line">&lt;/template&gt;</div></pre></td></tr></table></figure></p>
+<p>在用OZ工具制作openstack镜像，有报错：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">[root@openstack-server src]# oz-install -u -d3 CentOS6u5-x86_64.tdl #报错如下：</div><div class="line">..................</div><div class="line">raise oz.OzException.OzException(&quot;Could not find a libvirt bridge. Please run &apos;virsh net-start default&apos; to start the default libvirt network, or see http://github.com/clalancette/oz/wiki/Oz-Network-Configuration for more information&quot;)</div><div class="line">oz.OzException.OzException: Could not find a libvirt bridge. Please run &apos;virsh net-start default&apos; to start the default libvirt network, or see http://github.com/clalancette/oz/wiki/Oz-Network-Configuration for more information</div><div class="line"></div><div class="line">[root@openstack-server src]# virsh net-start default</div><div class="line">error: failed to get network &apos;default&apos;</div><div class="line">error: Network not found: no network with matching name &apos;default&apos;</div></pre></td></tr></table></figure></p>
+<p>查阅资料，说是因为 default 网络不存在<br>回想了一下，我开始在捣鼓openstack 的时候，可能用命令删除了default，也或许没有启动default网络<br>因为在不同的环境下，default.xml 的存放路径不同，这里笔者以自己的 centos7 为例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">[root@openstack-server src]# find / -name &quot;default.xml&quot;</div><div class="line">/etc/libvirt/qemu/networks/autostart/default.xml</div><div class="line">/etc/libvirt/qemu/networks/default.xml</div><div class="line">/usr/share/backgrounds/default.xml</div><div class="line">/usr/share/libvirt/networks/default.xml</div><div class="line">[root@openstack-server src]# virsh net-define /usr/share/libvirt/networks/default.xml</div><div class="line">Network default defined from /usr/share/libvirt/networks/default.xml</div><div class="line"></div><div class="line">[root@openstack-server src]# virsh net-start default</div><div class="line">Network default started</div><div class="line"></div><div class="line">[root@openstack-server src]# virsh net-list</div><div class="line">Name State Autostart Persistent</div><div class="line">----------------------------------------------------------</div><div class="line">default active no yes</div><div class="line"></div><div class="line">[root@openstack-server src]#</div></pre></td></tr></table></figure></p>
+<p>然后接着再进行openstack镜像的制作：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">[root@openstack-server src]# oz-install -u -d3 CentOS6u5-x86_64.tdl </div><div class="line">libvirt bridge name is virbr0</div><div class="line">Libvirt type is kvm</div><div class="line">Name: CentOS6u5-x86_64, UUID: 0a9b1d18-f517-40ae-9de9-1fd6101878e2</div><div class="line">MAC: 52:54:00:fb:0b:c9, distro: CentOS-6</div><div class="line">update: 5, arch: x86_64, diskimage: /var/lib/libvirt/images/CentOS6u5-x86_64.dsk</div><div class="line">nicmodel: virtio, clockoffset: utc</div><div class="line">mousetype: ps2, disk_bus: virtio, disk_dev: vda</div><div class="line">icicletmp: /var/lib/oz/icicletmp/CentOS6u5-x86_64, listen_port: 36050</div><div class="line">Original ISO path: /var/lib/oz/isos/CentOS-65x86_64-iso.iso</div><div class="line">Modified ISO cache: /var/lib/oz/isos/CentOS-65x86_64-iso-oz.iso</div><div class="line">Output ISO path: /var/lib/libvirt/images/CentOS6u5-x86_64-iso-oz.iso</div><div class="line">ISO content path: /var/lib/oz/isocontent/CentOS6u5-x86_64-iso</div><div class="line">Checking for guest conflicts with CentOS6u5-x86_64</div><div class="line">Generating install media</div><div class="line">Attempting to get the lock for /var/lib/oz/isos/CentOS-65x86_64-iso.iso</div><div class="line">Got the lock for /var/lib/oz/isos/CentOS-65x86_64-iso.iso</div><div class="line">Fetching the original media</div><div class="line">Fetching the original install media from file:///usr/local/src/CentOS-6.5-x86_64-bin-DVD1.iso</div><div class="line">15kB of 4363264kB</div><div class="line">10255kB of 4363264kB</div><div class="line">20494kB of 4363264kB</div><div class="line">30734kB of 4363264kB</div><div class="line">40973kB of 4363264kB</div><div class="line">51212kB of 4363264kB</div><div class="line">....................</div><div class="line">....................</div><div class="line">....................</div><div class="line">Cleaning up guestfs handle for CentOS6u5-x86_64</div><div class="line">Syncing</div><div class="line">Unmounting all</div><div class="line">Libvirt XML was written to CentOS6u5-x86_64Aug_30_2016-13:47:18</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>注意：<br>镜像制作完默认会存放到/var/lib/libvirt/images/ 目录下，可以在/etc/oz/oz.cfg 配置文件中进行修改路径。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[root@openstack-server src]# cd /var/lib/libvirt/images/</div><div class="line">[root@openstack-server images]# pwd</div><div class="line">/var/lib/libvirt/images</div><div class="line">[root@openstack-server images]# ll</div><div class="line">total 1087336</div><div class="line">-rw-rw-rw-. 1 root root 10737418240 Aug 30 13:47 CentOS6u5-x86_64.dsk</div><div class="line">[root@openstack-server images]# virt-sysprep --add CentOS6u5-x86_64.dsk </div><div class="line">[ 0.0] Examining the guest ...</div><div class="line">[ 5.0] Performing &quot;abrt-data&quot; ...</div><div class="line">...........</div><div class="line">[ 5.0] Setting a random seed</div><div class="line">[ 5.0] Performing &quot;lvm-uuids&quot; ...</div></pre></td></tr></table></figure>
+<p>查看文件信息<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@openstack-server images]# qemu-img info CentOS6u5-x86_64.dsk </div><div class="line">image: CentOS6u5-x86_64.dsk</div><div class="line">file format: raw</div><div class="line">virtual size: 10G (10737418240 bytes)</div><div class="line">disk size: 1.0G</div></pre></td></tr></table></figure></p>
+<p>上传镜像到 Glance<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">[root@openstack-server images]# glance image-create --name &quot;CentOS-6.5&quot; --file /var/lib/libvirt/images/CentOS6u5-x86_64.dsk --disk-format qcow2 --container-format bare --visibility public --progress</div><div class="line">[=============================&gt;] 100%</div><div class="line"></div><div class="line">+------------------+--------------------------------------+</div><div class="line">| Property | Value |</div><div class="line">+------------------+--------------------------------------+</div><div class="line">| checksum | 2d16e5ef687fead34fa801aafe37f058 |</div><div class="line">| container_format | bare |</div><div class="line">| created_at | 2016-08-30T06:03:22Z |</div><div class="line">| disk_format | qcow2 |</div><div class="line">| id | 508db9d4-6c9f-459d-8782-065ee8b6f2c2 |</div><div class="line">| min_disk | 0 |</div><div class="line">| min_ram | 0 |</div><div class="line">| name | CentOS-6.5 |</div><div class="line">| owner | 65a0c00638c247a0a274837aa6eb165f |</div><div class="line">| protected | False |</div><div class="line">| size | 10737418240 |</div><div class="line">| status | active |</div><div class="line">| tags | [] |</div><div class="line">| updated_at | 2016-08-30T06:04:26Z |</div><div class="line">| virtual_size | None |</div><div class="line">| visibility | public |</div><div class="line">+------------------+--------------------------------------+</div></pre></td></tr></table></figure></p>
+<p>查看镜像<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@openstack-server images]# glance image-list</div><div class="line">+--------------------------------------+------------+</div><div class="line">| ID | Name |</div><div class="line">+--------------------------------------+------------+</div><div class="line">| 508db9d4-6c9f-459d-8782-065ee8b6f2c2 | CentOS-6.5 |</div><div class="line">+--------------------------------------+------------+</div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/openstack/" rel="tag">#openstack</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/10/openstack-mitaka-install-note/" rel="next" title="Openstack Install note">
+                <i class="fa fa-chevron-left"></i> Openstack Install note
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="wang6237" />
+          <p class="site-author-name" itemprop="name">wang6237</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">12</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wang6237" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#openstack-使用自定义镜像"><span class="nav-number">1.</span> <span class="nav-text">openstack 使用自定义镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#利用VirtualBox转换镜像"><span class="nav-number">1.1.</span> <span class="nav-text">利用VirtualBox转换镜像</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#qemu-img-convert-raw-qcow2-qed-vdi-vmdk-vhd¶"><span class="nav-number">1.1.1.</span> <span class="nav-text">qemu-img convert: raw, qcow2, qed, vdi, vmdk, vhd¶</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#用OZ工具制作openstack镜像"><span class="nav-number">1.1.2.</span> <span class="nav-text">用OZ工具制作openstack镜像</span></a></li></ol></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2016</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wang6237</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
