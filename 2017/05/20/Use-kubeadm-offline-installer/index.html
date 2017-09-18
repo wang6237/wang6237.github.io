@@ -1,0 +1,800 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="docker kubernetes," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="使用kubeadmin离线安装包安装kubernetes 本文是通过离线的方式部署kubernetes。">
+<meta name="keywords" content="docker kubernetes">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Use-kubeadm-offline-installer">
+<meta property="og:url" content="http://www.z210.me/2017/05/20/Use-kubeadm-offline-installer/index.html">
+<meta property="og:site_name" content="记录点滴">
+<meta property="og:description" content="使用kubeadmin离线安装包安装kubernetes 本文是通过离线的方式部署kubernetes。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-18T09:09:14.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Use-kubeadm-offline-installer">
+<meta name="twitter:description" content="使用kubeadmin离线安装包安装kubernetes 本文是通过离线的方式部署kubernetes。">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://www.z210.me/2017/05/20/Use-kubeadm-offline-installer/"/>
+
+  <title> Use-kubeadm-offline-installer | 记录点滴 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">记录点滴</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                Use-kubeadm-offline-installer
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-05-20T16:00:00+08:00" content="2017-05-20">
+              2017-05-20
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/docker/" itemprop="url" rel="index">
+                    <span itemprop="name">docker</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="使用kubeadmin离线安装包安装kubernetes"><a href="#使用kubeadmin离线安装包安装kubernetes" class="headerlink" title="使用kubeadmin离线安装包安装kubernetes"></a>使用kubeadmin离线安装包安装kubernetes</h1><hr>
+<p>本文是通过离线的方式部署kubernetes。</p>
+<a id="more"></a>
+<h2 id="要求"><a href="#要求" class="headerlink" title="要求"></a>要求</h2><p>主机，都是4C8G的虚拟机</p>
+<p>172.16.2.248 k8s-master</p>
+<p>172.16.2.249 k8s-node01</p>
+<p>172.16.2.250 k8s-node02</p>
+<blockquote>
+<p>操作系统，最小化安装CentOS7</p>
+</blockquote>
+<p><code>关闭selinux</code></p>
+<p><code>yum groupinstall Development Tools -y</code></p>
+<p><code>rpm -ivh https://mirrors.ustc.edu.cn/epel/epel-release-latest-7.noarch.rpm</code></p>
+<blockquote>
+<p>设置主机名、安装ansible依赖和ansible</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">hostname k8s-master</div><div class="line">echo `hostname` &gt; /etc/hostname</div><div class="line">yum install -y openssl-devel python-devel net-tools python2-pip</div><div class="line">pip install ansible</div></pre></td></tr></table></figure>
+<blockquote>
+<p>在k8s-master上设置免密登陆</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">ssh-keygen -t rsa</div><div class="line">ssh-copy-id -i ~/.ssh/id_rsa.pub root@172.16.2.249</div><div class="line">ssh-copy-id -i ~/.ssh/id_rsa.pub root@172.16.2.250</div><div class="line">ssh-copy-id -i ~/.ssh/id_rsa.pub root@172.16.2.248</div></pre></td></tr></table></figure>
+<h2 id="下载kubeadm的离线安装包"><a href="#下载kubeadm的离线安装包" class="headerlink" title="下载kubeadm的离线安装包"></a>下载kubeadm的离线安装包</h2><p>离线包的gitlab地址</p>
+<p><a href="https://github.com/fleeto/kubeadm-offline-installer" target="_blank" rel="external">https://github.com/fleeto/kubeadm-offline-installer</a></p>
+<p>按照GitHub中的Readme的指引</p>
+<ol>
+<li>Download and extract bin package from <a href="https://github.com/fleeto/kubeadm-offline-installer/releases" target="_blank" rel="external">Releases tab</a></li>
+<li>Write down ip in the hosts file, here is a sample in <code>hosts/hosts.sample</code>.</li>
+<li>Change the variables in <code>group_vars/all</code>.</li>
+<li>Run the playbook. <code>ansible-playbook -i hosts/hosts.sample -u root cluster.yml</code></li>
+<li>You can find init/join script in <code>/usr/local/bin</code>.</li>
+<li>Configuration files are stored in Master node’s <code>/etc/kubernetes</code></li>
+<li>Enjoy it.</li>
+</ol>
+<blockquote>
+<p>hosts.sample</p>
+</blockquote>
+<p>这里需要注意，proxy和registry这2个标签</p>
+<p>如果使用docker官方的registry，需要将registry标签下什么都不写，留空白</p>
+<p>如果不使用proxy需要，需要将proxy标签下什么都不写，留空白</p>
+<p>我的hosts.sample 如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[remote]</div><div class="line">172.16.2.248</div><div class="line">172.16.2.249</div><div class="line">172.16.2.250</div><div class="line">[master]</div><div class="line">172.16.2.248</div><div class="line">[node]</div><div class="line">172.16.2.249</div><div class="line">172.16.2.250</div><div class="line">[etcd]</div><div class="line">172.16.2.248</div><div class="line">[dns]</div><div class="line">172.16.2.248</div><div class="line">[registry]</div><div class="line"></div><div class="line">[proxy]</div></pre></td></tr></table></figure>
+<blockquote>
+<p>配置文件 group_vars/all</p>
+</blockquote>
+<p>这个配置文件主要是需要注意proxy的配置</p>
+<p>测试的时候不知道，这两个配置文件的关系，配置的比较乱，导致后来的创建容器的时候无法获取镜像</p>
+<p>我的group_vars/all</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">main_version: &quot;v1.7.0&quot;</div><div class="line">etcd_version: &quot;3.0.17&quot;</div><div class="line">dns_version: &quot;1.14.2&quot;</div><div class="line">pause_version: &quot;3.0&quot;</div><div class="line">kubeadm_version: &quot;v1.6.6&quot;</div><div class="line">kubeadm_init_options: &quot;&quot;</div><div class="line"></div><div class="line"># Proxy Related</div><div class="line">proxy_host: &quot;172.16.2.240&quot;</div><div class="line">proxy_port: &quot;3128&quot;</div><div class="line">proxy_env:</div><div class="line">  - http_proxy: &quot;&quot;</div><div class="line">    https_proxy: &quot;&quot;</div><div class="line">docker_proxy: 0</div><div class="line"></div><div class="line">remove_search_in_resolve: 1</div></pre></td></tr></table></figure>
+<p>当hosts.sample中的proxy有值并且这个配置文件中的docker_proxy的值为1的时候，会为docker服务生成一个proxy.conf的配置文件，存储在所以节点的/etc/systemd/system/docker.service.d目录下，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">注, 一开始测试的时候使用了proxy，再重新安装的时候没有删掉这个文件以至于，改了这个配置文件但是节点</div><div class="line">并没有生效，白白浪费了很多时间。个人建议根据自己的实际情况来配置。</div></pre></td></tr></table></figure>
+<blockquote>
+<p>执行playbook</p>
+</blockquote>
+<p><code>ansible-playbook -i hosts/hosts.sample -u root cluster.yml</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">.........</div><div class="line">.........</div><div class="line">TASK [kubeadm : Uploading &quot;etcd-3.0.17&quot;] </div><div class="line">****************************************************</div><div class="line">changed: [172.16.2.249]</div><div class="line">changed: [172.16.2.250]</div><div class="line">changed: [172.16.2.248]</div><div class="line"></div><div class="line">TASK [kubeadm : Loading &quot;etcd-3.0.17&quot;] </div><div class="line">****************************************************</div><div class="line">changed: [172.16.2.249]</div><div class="line">changed: [172.16.2.250]</div><div class="line">changed: [172.16.2.248]</div><div class="line"></div><div class="line">TASK [kubeadm : Uploading &quot;kube-apiserver-v1.7.0&quot;] </div><div class="line">****************************************************</div><div class="line">changed: [172.16.2.249]</div><div class="line">changed: [172.16.2.250]</div><div class="line">changed: [172.16.2.248]</div><div class="line">.........</div><div class="line">.........</div><div class="line"></div><div class="line"># 最终结果，没有出错的话，就安装正确了，如果有错，就解决错误，再执行是添加</div><div class="line"># --limit @/opt/src/kubeadm-offline-installer-1.7.0.1/cluster.retry。</div><div class="line">PLAY RECAP </div><div class="line">********************************************************************************</div><div class="line">172.16.2.248               : ok=81   changed=47   unreachable=0    failed=0</div><div class="line">172.16.2.249               : ok=69   changed=38   unreachable=0    failed=0</div><div class="line">172.16.2.250               : ok=69   changed=38   unreachable=0    failed=0</div></pre></td></tr></table></figure>
+<blockquote>
+<p>验证</p>
+</blockquote>
+<p>此时在各个节点执行kubeadm命令，看是否出现帮助信息，如出现以下信息则证明kubeadm安装成功。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">[root@k8s-master kubeadm-offline-installer-1.7.0.1]# kubeadm</div><div class="line">kubeadm: easily bootstrap a secure Kubernetes cluster.</div><div class="line"></div><div class="line">    ┌──────────────────────────────────────────────────────────┐</div><div class="line">    │ KUBEADM IS BETA, DO NOT USE IT FOR PRODUCTION CLUSTERS!  │</div><div class="line">    │                                                          │</div><div class="line">    │ But, please try it out! Give us feedback at:             │</div><div class="line">    │ https://github.com/kubernetes/kubeadm/issues             │</div><div class="line">    │ and at-mention @kubernetes/sig-cluster-lifecycle-misc    │</div><div class="line">    └──────────────────────────────────────────────────────────┘</div><div class="line"></div><div class="line">Example usage:</div><div class="line"></div><div class="line">    Create a two-machine cluster with one master (which controls the cluster),</div><div class="line">    and one node (where your workloads, like Pods and ReplicaSets run).</div><div class="line"></div><div class="line">    ┌──────────────────────────────────────────────────────────┐</div><div class="line">    │ On the first machine                                     │</div><div class="line">    ├──────────────────────────────────────────────────────────┤</div><div class="line">    │ master# kubeadm init                                     │</div><div class="line">    └──────────────────────────────────────────────────────────┘</div><div class="line"></div><div class="line">    ┌──────────────────────────────────────────────────────────┐</div><div class="line">    │ On the second machine                                    │</div><div class="line">    ├──────────────────────────────────────────────────────────┤</div><div class="line">    │ node# kubeadm join --token=&lt;token&gt; &lt;ip-of-master&gt;:&lt;port&gt; │</div><div class="line">    └──────────────────────────────────────────────────────────┘</div><div class="line"></div><div class="line">    You can then repeat the second step on as many other machines as you like.</div><div class="line"></div><div class="line">Usage:</div><div class="line">  kubeadm [command]</div><div class="line"></div><div class="line">Available Commands:</div><div class="line">  alpha       Experimental sub-commands not yet fully functional.</div><div class="line">  completion  Output shell completion code for the specified shell (bash or zsh)</div><div class="line">  init        Run this in order to set up the Kubernetes master</div><div class="line">  join        Run this on any machine you wish to join an existing cluster</div><div class="line">  reset       Run this to revert any changes made to this host by &apos;kubeadm init&apos; or &apos;kubeadm join&apos;.</div><div class="line">  token       Manage bootstrap tokens.</div><div class="line">  version     Print the version of kubeadm</div><div class="line"></div><div class="line">Flags:</div><div class="line">  -h, --help   help for kubeadm</div><div class="line"></div><div class="line">Use &quot;kubeadm [command] --help&quot; for more information about a command.</div></pre></td></tr></table></figure>
+<blockquote>
+<p>在k8s-master节点，执行 kubectl get componentstatuses 命令, 验证master</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[root@k8s-master kubeadm-offline-installer-1.7.0.1]# kubectl get componentstatuses</div><div class="line">NAME                 STATUS    MESSAGE              ERROR</div><div class="line">controller-manager   Healthy   ok</div><div class="line">scheduler            Healthy   ok</div><div class="line">etcd-0               Healthy   &#123;&quot;health&quot;: &quot;true&quot;&#125;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>在k8s-master节点，执行 kubectl get node 命令</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@k8s-master kubeadm-offline-installer-1.7.0.1]# kubectl get node</div><div class="line">NAME         STATUS    AGE       VERSION</div><div class="line">k8s-master   Ready     6h        v1.7.0</div></pre></td></tr></table></figure>
+<blockquote>
+<p>这k8s-master节点执行，kubeadm token list命令获取node加入集群时的token</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@k8s-master kubeadm-offline-installer-1.7.0.1]# kubeadm token list</div><div class="line">TOKEN                     TTL         EXPIRES   USAGES                   DESCRIPTION</div><div class="line">6d9373.2417b7c6e84d4d9e   &lt;forever&gt;   &lt;never&gt;   authentication,signing   The default bootstrap token generated by &apos;kubeadm init&apos;.</div></pre></td></tr></table></figure>
+<blockquote>
+<p>在node节点执行， kubeadm join –token=6d9373.2417b7c6e84d4d9e 172.16.2.248:6443</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">[root@k8s-node01 ~]# kubeadm join --token=6d9373.2417b7c6e84d4d9e 172.16.2.248:6443</div><div class="line">[kubeadm] WARNING: kubeadm is in beta, please do not use it for production clusters.</div><div class="line">[preflight] Running pre-flight checks</div><div class="line">[preflight] WARNING: hostname &quot;k8s-node01&quot; could not be reached</div><div class="line">[preflight] WARNING: hostname &quot;k8s-node01&quot; lookup k8s-node01 on 114.114.114.114:53: no such host</div><div class="line">[preflight] Starting the kubelet service</div><div class="line">[discovery] Trying to connect to API Server &quot;172.16.2.248:6443&quot;</div><div class="line">[discovery] Created cluster-info discovery client, requesting info from &quot;https://172.16.2.248:6443&quot;</div><div class="line"># 这里会停顿一会儿等待master验证，以下为master验证后输出的信息</div><div class="line">[discovery] Cluster info signature and contents are valid, will use API Server &quot;https://172.16.2.248:6443&quot;</div><div class="line">[discovery] Successfully established connection with API Server &quot;172.16.2.248:6443&quot;</div><div class="line">[bootstrap] Detected server version: v1.7.0</div><div class="line">[bootstrap] The server supports the Certificates API (certificates.k8s.io/v1beta1)</div><div class="line">[csr] Created API client to obtain unique certificate for this node, generating keys and certificate signing request</div><div class="line">[csr] Received signed certificate from the API server, generating KubeConfig...</div><div class="line">[kubeconfig] Wrote KubeConfig file to disk: &quot;/etc/kubernetes/kubelet.conf&quot;</div><div class="line"></div><div class="line">Node join complete:</div><div class="line">* Certificate signing request sent to master and response</div><div class="line">  received.</div><div class="line">* Kubelet informed of new secure connection details.</div><div class="line"></div><div class="line">Run &apos;kubectl get nodes&apos; on the master to see this machine join.</div></pre></td></tr></table></figure>
+<blockquote>
+<p>在k8s-master节点执行，kubectl get csr查看通过 kubelet 的 TLS 证书请求<br>kubelet 首次启动时向 kube-apiserver 发送证书签名请求，必须通过后 kubernetes 系统才会将该 Node 加入到集群。</p>
+</blockquote>
+<p>查看未授权的 CSR 请求：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">[root@k8s-master kubeadm-offline-installer-1.7.0.1]# kubectl get csr</div><div class="line">NAME        AGE       REQUESTOR                 CONDITION</div><div class="line">csr-r9k3s   12s       system:bootstrap:6d9373   Pending</div></pre></td></tr></table></figure>
+<blockquote>
+<p>在k8s-master节点执行，kubectl certificate approve csr-r9k3s 通过 CSR 请求</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@k8s-master kubeadm-offline-installer-1.7.0.1]# kubectl certificate approve csr-r9k3s</div><div class="line">certificatesigningrequest &quot;csr-r9k3s&quot; approved</div></pre></td></tr></table></figure>
+<blockquote>
+<p>在k8s-master节点执行，kubectl get nodes, 查看节点信息</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@k8s-master kubeadm-offline-installer-1.7.0.1]# kubectl get nodes</div><div class="line">NAME         STATUS    AGE       VERSION</div><div class="line">k8s-master   Ready     6h        v1.7.0</div><div class="line">k8s-node01   Ready     6h        v1.7.0</div><div class="line">k8s-node02   Ready     6h        v1.7.0</div><div class="line">k8s-node03   Ready     5m        v1.7.0</div></pre></td></tr></table></figure>
+<blockquote>
+<p>验证集群功能</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">apiVersion: v1</div><div class="line">kind: Service</div><div class="line">metadata:</div><div class="line">  name: nginx-ds</div><div class="line">  labels:</div><div class="line">    app: nginx-ds</div><div class="line">spec:</div><div class="line">  type: NodePort</div><div class="line">  selector:</div><div class="line">    app: nginx-ds</div><div class="line">  ports:</div><div class="line">  - name: http</div><div class="line">    port: 80</div><div class="line">    targetPort: 80</div><div class="line"></div><div class="line">---</div><div class="line"></div><div class="line">apiVersion: extensions/v1beta1</div><div class="line">kind: DaemonSet</div><div class="line">metadata:</div><div class="line">  name: nginx-ds</div><div class="line">  labels:</div><div class="line">    addonmanager.kubernetes.io/mode: Reconcile</div><div class="line">spec:</div><div class="line">  template:</div><div class="line">    metadata:</div><div class="line">      labels:</div><div class="line">        app: nginx-ds</div><div class="line">    spec:</div><div class="line">      containers:</div><div class="line">      - name: my-nginx</div><div class="line">        image: nginx:1.7.9</div><div class="line">        ports:</div><div class="line">        - containerPort: 80</div></pre></td></tr></table></figure>
+<blockquote>
+<p>创建 Pod 和服务</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ kubectl create -f nginx-ds.yml</div><div class="line">service &quot;nginx-ds&quot; created</div><div class="line">daemonset &quot;nginx-ds&quot; created</div></pre></td></tr></table></figure>
+<blockquote>
+<p>检查节点状态</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[root@k8s-master kubeadm-offline-installer-1.7.0.1]# kubectl get nodes</div><div class="line">NAME         STATUS    AGE       VERSION</div><div class="line">k8s-master   Ready     6h        v1.7.0</div><div class="line">k8s-node01   Ready     6h        v1.7.0</div><div class="line">k8s-node02   Ready     6h        v1.7.0</div><div class="line">k8s-node03   Ready     10m       v1.7.0</div></pre></td></tr></table></figure>
+<blockquote>
+<p>检查各个Node上的Pod IP连通性</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">[root@k8s-master kubeadm-offline-installer-1.7.0.1]# kubectl get pods  -o wide|grep nginx-ds</div><div class="line">nginx-ds2-5p8t5               1/1       Running   0          21h       192.168.85.194    k8s-node01</div><div class="line">nginx-ds2-bl5x8               1/1       Running   0          21h       192.168.58.194    k8s-node02</div><div class="line">nginx-ds2-z4hdd               1/1       Running   0          15h       192.168.135.131   k8s-node03</div></pre></td></tr></table></figure>
+<p>可见，nginx-ds2 的 Pod IP 分别是 192.168.85.194、192.168.58.194，在所有 Node 上分别 ping 这两个 IP，看是否连通。</p>
+<blockquote>
+<p>检查服务 IP 和端口可达性</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[root@k8s-master kubeadm-offline-installer-1.7.0.1]# kubectl get svc |grep nginx-ds</div><div class="line">nginx-ds2    10.107.113.147   &lt;nodes&gt;       80:32009/TCP   6h</div></pre></td></tr></table></figure>
+<p>可见：</p>
+<p>服务IP：10.107.113.147</p>
+<p>服务端口：80</p>
+<p>NodePort端口：32009</p>
+<p>在所有 Node 上执行：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ curl 10.107.113.147 # `kubectl get svc |grep nginx-ds` 输出中的服务 IP</div><div class="line">$</div></pre></td></tr></table></figure>
+<p>预期输出 nginx 欢迎页面内容。</p>
+<blockquote>
+<p>检查服务的 NodePort 可达性</p>
+</blockquote>
+<p>在所有 Node 上执行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">$ export NODE_IP=172.16.2.248 # 当前 Node 的 IP</div><div class="line">$ export NODE_PORT=32009 # `kubectl get svc |grep nginx-ds` 输出中 80 端口映射的 NodePort</div><div class="line">$ curl $&#123;NODE_IP&#125;:$&#123;NODE_PORT&#125;</div><div class="line">$</div></pre></td></tr></table></figure>
+<p>预期输出 nginx 欢迎页面内容。</p>
+<h2 id="添加node节点"><a href="#添加node节点" class="headerlink" title="添加node节点"></a>添加node节点</h2><h2 id="添加dashboard-插件"><a href="#添加dashboard-插件" class="headerlink" title="添加dashboard 插件"></a>添加dashboard 插件</h2><p>获取kubernetes-dashboard的镜像</p>
+<blockquote>
+<p>这里需要翻墙, 在能翻墙的主机上下载镜像</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker pull gcr.io/google_containers/kubernetes-dashboard-amd64:v1.6.1</div></pre></td></tr></table></figure>
+<blockquote>
+<p>方法1，打上tag，push到私有的registry中去</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">docker tag gcr.io/google_containers/kubernetes-dashboard-amd64 registry.ffpms.com/library/kubernetes-dashboard-amd64:v1.6.1</div><div class="line">docker push registry.ffpms.com/library/kubernetes-dashboard-amd64:v1.6.1</div></pre></td></tr></table></figure>
+<blockquote>
+<p>登陆k8s-master,pull 镜像</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">docker pull registry.ffpms.com/library/kubernetes-dashboard-amd64:v1.6.1</div></pre></td></tr></table></figure>
+<blockquote>
+<p>方法2，导出镜像，将镜像上传到k8s-master，再导入。</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">docker run -d gcr.io/google_containers/kubernetes-dashboard-amd64:v1.6.1</div><div class="line">docker ps -a|grep dash</div><div class="line">6ea3708bbae3        gcr.io/google_containers/kubernetes-dashboard-amd64:v1.6.1   &quot;/dashboard --inse...&quot;   21 hours ago        Exited (1) 21 hours ago                                                    upbeat_easley</div><div class="line">docker export 6ea3708bbae3 &gt; kubernetes-dashboard-amd64-v1.6.1.tar</div><div class="line">scp kubernetes-dashboard-amd64-v1.6.1.tar root@172.16.2.248:/opt/src</div></pre></td></tr></table></figure>
+<blockquote>
+<p>登陆k8s-master,导入镜像</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">cd /opt/src</div><div class="line">cat kubernetes-dashboard-amd64-v1.6.1.tar | docker import - gcr.io/google_containers/kubernetes-dashboard-amd64:v1.6.1</div></pre></td></tr></table></figure>
+<p>以上方法都可以，只是需要在yaml文件中需要指定正确的镜像即可.</p>
+<blockquote>
+<p>kubernetes-dashboard.yaml</p>
+</blockquote>
+<p>下载yaml文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">wget https://raw.githubusercontent.com/opsnull/follow-me-install-kubernetes-cluster/master/manifests/dashboard/dashboard-service.yaml</div><div class="line">wget https://raw.githubusercontent.com/opsnull/follow-me-install-kubernetes-cluster/master/manifests/dashboard/dashboard-rbac.yaml</div><div class="line">wget https://raw.githubusercontent.com/opsnull/follow-me-install-kubernetes-cluster/master/manifests/dashboard/dashboard-controller.yaml</div></pre></td></tr></table></figure>
+<p>将image修改为本地镜像即可</p>
+<blockquote>
+<p>创建服务</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">kubectl create -f .</div></pre></td></tr></table></figure>
+<p>检查执行结果</p>
+<p>查看分配的 NodePort</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ kubectl get services kubernetes-dashboard -n kube-system</div><div class="line">NAME                   CLUSTER-IP       EXTERNAL-IP   PORT(S)        AGE</div><div class="line">kubernetes-dashboard   10.102.102.157   &lt;nodes&gt;       80:32391/TCP   21h</div></pre></td></tr></table></figure>
+<p>NodePort 32391映射到 dashboard pod 80端口；<br>可以通过node的ip：32391</p>
+<p><a href="http://172.16.2.249:32391" target="_blank" rel="external">http://172.16.2.249:32391</a></p>
+<p><a href="http://172.16.2.250:32391" target="_blank" rel="external">http://172.16.2.250:32391</a></p>
+<blockquote>
+<p>检查 controller</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ kubectl get deployment kubernetes-dashboard  -n kube-system</div><div class="line">NAME                   DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE</div><div class="line">kubernetes-dashboard   1         1         1            1           21h</div><div class="line">$ kubectl get pods  -n kube-system | grep dashboard</div><div class="line">kubernetes-dashboard-548151799-8p3z9        1/1       Running   0          21h</div></pre></td></tr></table></figure>
+<blockquote>
+<p>访问dashboard</p>
+</blockquote>
+<p>kubernetes-dashboard 服务暴露了 NodePort，可以使用 <a href="http://NodeIP:nodePort" target="_blank" rel="external">http://NodeIP:nodePort</a> 地址访问 dashboard；</p>
+<p>通过 kube-apiserver 访问 dashboard；</p>
+<p>通过 kubectl proxy 访问 dashboard：</p>
+<blockquote>
+<p>通过 kubectl proxy 访问 dashboard</p>
+</blockquote>
+<p>启动代理</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ kubectl proxy --address=&apos;172.16.2.248&apos; --port=8086 --accept-hosts=&apos;^*$&apos;</div><div class="line">Starting to serve on 172.16.2.248:8086</div></pre></td></tr></table></figure>
+<p>需要指定 –accept-hosts 选项，否则浏览器访问 dashboard 页面时提示 “Unauthorized”；</p>
+<p>浏览器访问 URL：<a href="http://172.16.2.248:8086/ui" target="_blank" rel="external">http://172.16.2.248:8086/ui</a> </p>
+<p>自动跳转到：<a href="http://172.16.2.248:8086/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/workload?namespace=default" target="_blank" rel="external">http://172.16.2.248:8086/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard/#/workload?namespace=default</a></p>
+<p>通过 kube-apiserver 访问dashboard</p>
+<blockquote>
+<p>获取集群服务地址列表</p>
+</blockquote>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ kubectl cluster-info</div><div class="line">Kubernetes master is running at https://172.16.2.248:6443</div><div class="line">Heapster is running at https://172.16.2.248:6443/api/v1/namespaces/kube-system/services/heapster/proxy</div><div class="line">KubeDNS is running at https://172.16.2.248:6443/api/v1/namespaces/kube-system/services/kube-dns/proxy</div><div class="line">kubernetes-dashboard is running at https://172.16.2.248:6443/api/v1/namespaces/kube-system/services/kubernetes-dashboard/proxy</div></pre></td></tr></table></figure>
+<p>由于 kube-apiserver 开启了 RBAC 授权，而浏览器访问 kube-apiserver 的时候使用的是匿名证书，所以访问安全端口会导致授权失败。这里需要使用非安全端口访问 kube-apiserver：</p>
+<p>浏览器访问 URL：<a href="http://172.16.2.248:8086/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard" target="_blank" rel="external">http://172.16.2.248:8086/api/v1/proxy/namespaces/kube-system/services/kubernetes-dashboard</a></p>
+<p>参考，《follow-me-install-kubernetes-cluster》中<a href="https://github.com/opsnull/follow-me-install-kubernetes-cluster/blob/master/09-部署Dashboard插件.md" target="_blank" rel="external">部署Dashboard插件</a>的章节</p>
+<h2 id="添加heapster-插件"><a href="#添加heapster-插件" class="headerlink" title="添加heapster 插件"></a>添加heapster 插件</h2><h2 id="添加EFK-插件"><a href="#添加EFK-插件" class="headerlink" title="添加EFK 插件"></a>添加EFK 插件</h2><h2 id="部署-harbor-私有仓库"><a href="#部署-harbor-私有仓库" class="headerlink" title="部署 harbor 私有仓库"></a>部署 harbor 私有仓库</h2><h2 id="清理集群"><a href="#清理集群" class="headerlink" title="清理集群"></a>清理集群</h2>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/docker-kubernetes/" rel="tag">#docker kubernetes</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/09/20/use-virtualbox-convert-to-qcow2/" rel="next" title="OpenStack Create Images Manually">
+                <i class="fa fa-chevron-left"></i> OpenStack Create Images Manually
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="wang6237" />
+          <p class="site-author-name" itemprop="name">wang6237</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wang6237" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#使用kubeadmin离线安装包安装kubernetes"><span class="nav-number">1.</span> <span class="nav-text">使用kubeadmin离线安装包安装kubernetes</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#要求"><span class="nav-number">1.1.</span> <span class="nav-text">要求</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#下载kubeadm的离线安装包"><span class="nav-number">1.2.</span> <span class="nav-text">下载kubeadm的离线安装包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加node节点"><span class="nav-number">1.3.</span> <span class="nav-text">添加node节点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加dashboard-插件"><span class="nav-number">1.4.</span> <span class="nav-text">添加dashboard 插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加heapster-插件"><span class="nav-number">1.5.</span> <span class="nav-text">添加heapster 插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加EFK-插件"><span class="nav-number">1.6.</span> <span class="nav-text">添加EFK 插件</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#部署-harbor-私有仓库"><span class="nav-number">1.7.</span> <span class="nav-text">部署 harbor 私有仓库</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#清理集群"><span class="nav-number">1.8.</span> <span class="nav-text">清理集群</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wang6237</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
