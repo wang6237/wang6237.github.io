@@ -84,14 +84,16 @@
 
 
 
-<meta name="description" content="Linux Mint 的使用笔记安装首先，要从官方网站上下载最新的iso文件，然后再将iso文件写入光盘或者U盘, 然后安装就行了，这里就不在多说了。  Linux Mint官方网站 使用U盘安装，你可能需要这个工具Universal-USB-Installer">
-<meta name="keywords" content="Linux">
+<meta name="description" content="Linux Mint 的使用笔记安装首先，要从官方网站上下载最新的iso文件，然后再将iso文件写入光盘或者U盘, 然后安装就行了，这里就不在多说了。
+
+Linux Mint官方网站 使用U盘安装，你可能需要这个工具Universal-USB-Installer">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux Mint 的使用笔记">
 <meta property="og:url" content="http://www.z210.me/2016/08/30/Linux_Minit_Note/index.html">
 <meta property="og:site_name" content="记录点滴">
-<meta property="og:description" content="Linux Mint 的使用笔记安装首先，要从官方网站上下载最新的iso文件，然后再将iso文件写入光盘或者U盘, 然后安装就行了，这里就不在多说了。  Linux Mint官方网站 使用U盘安装，你可能需要这个工具Universal-USB-Installer">
-<meta property="og:locale" content="zh-Hans">
+<meta property="og:description" content="Linux Mint 的使用笔记安装首先，要从官方网站上下载最新的iso文件，然后再将iso文件写入光盘或者U盘, 然后安装就行了，这里就不在多说了。
+
+Linux Mint官方网站 使用U盘安装，你可能需要这个工具Universal-USB-Installer">
 <meta property="og:image" content="http://www.z210.me/uploads/apt-source-1.png">
 <meta property="og:image" content="http://www.z210.me/uploads/apt-source-2.png">
 <meta property="og:image" content="http://www.z210.me/uploads/apt-source-3.png">
@@ -100,10 +102,12 @@
 <meta property="og:image" content="https://camo.githubusercontent.com/7f21a8ab158725c5b334da910f305a532cb0c1cb/687474703a2f2f692e696d6775722e636f6d2f383071435a47512e706e67">
 <meta property="og:image" content="http://www.z210.me/uploads/flat-1.png">
 <meta property="og:image" content="http://www.z210.me/uploads/flat-2.png">
-<meta property="og:updated_time" content="2017-09-18T08:16:48.000Z">
+<meta property="og:updated_time" content="2016-08-30T09:59:51.111Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Linux Mint 的使用笔记">
-<meta name="twitter:description" content="Linux Mint 的使用笔记安装首先，要从官方网站上下载最新的iso文件，然后再将iso文件写入光盘或者U盘, 然后安装就行了，这里就不在多说了。  Linux Mint官方网站 使用U盘安装，你可能需要这个工具Universal-USB-Installer">
+<meta name="twitter:description" content="Linux Mint 的使用笔记安装首先，要从官方网站上下载最新的iso文件，然后再将iso文件写入光盘或者U盘, 然后安装就行了，这里就不在多说了。
+
+Linux Mint官方网站 使用U盘安装，你可能需要这个工具Universal-USB-Installer">
 <meta name="twitter:image" content="http://www.z210.me/uploads/apt-source-1.png">
 
 
@@ -332,34 +336,34 @@
 </blockquote>
 <a id="more"></a>
 <h2 id="Mint的优化"><a href="#Mint的优化" class="headerlink" title="Mint的优化"></a>Mint的优化</h2><h3 id="软件源的选择"><a href="#软件源的选择" class="headerlink" title="软件源的选择"></a>软件源的选择</h3><p>通过系统的软件源可以更改  “菜单”&gt;&gt;&gt; “系统管理”&gt;&gt;&gt; “软件源”&gt;&gt;&gt; “官方仓库”&gt;&gt;&gt; “镜像”，工具自身会测试所有的节点，你只要选择最快的即可。<br>软件源<br><img src="/uploads/apt-source-1.png" alt="软件源"><br>官方仓库<br><img src="/uploads/apt-source-2.png" alt="官方仓库"><br>选择速度快的镜像<br><img src="/uploads/apt-source-3.png" alt="镜像"></p>
-<h3 id="更新系统"><a href="#更新系统" class="headerlink" title="更新系统"></a>更新系统</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt update</div><div class="line">sudo apt upgrade -y</div></pre></td></tr></table></figure>
-<h3 id="主题与图标"><a href="#主题与图标" class="headerlink" title="主题与图标"></a>主题与图标</h3><h4 id="安装旧的壁纸"><a href="#安装旧的壁纸" class="headerlink" title="安装旧的壁纸"></a>安装旧的壁纸</h4><p>每个Linux Mint发行版都自带了一套最新的漂亮的壁纸。但是，你也可以安装先前版本中的壁纸。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> sudo apt-get install mint-backgrounds-*</div></pre></td></tr></table></figure></p>
-<h4 id="安装Numix主题"><a href="#安装Numix主题" class="headerlink" title="安装Numix主题"></a>安装Numix主题</h4><p>我们将使用 Numix 的官方 PPA 来进行安装，先打开 终端 使用如下命令安装 Numix 主题和图标：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo add-apt-repository ppa:numix/ppa</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install numix-gtk-theme numix-icon-theme-circle</div></pre></td></tr></table></figure></p>
+<h3 id="更新系统"><a href="#更新系统" class="headerlink" title="更新系统"></a>更新系统</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">sudo apt update</div><div class="line">sudo apt upgrade -y</div></pre></td></tr></table></figure>
+<h3 id="主题与图标"><a href="#主题与图标" class="headerlink" title="主题与图标"></a>主题与图标</h3><h4 id="安装旧的壁纸"><a href="#安装旧的壁纸" class="headerlink" title="安装旧的壁纸"></a>安装旧的壁纸</h4><p>每个Linux Mint发行版都自带了一套最新的漂亮的壁纸。但是，你也可以安装先前版本中的壁纸。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install mint-backgrounds-*</div></pre></td></tr></table></figure></p>
+<h4 id="安装Numix主题"><a href="#安装Numix主题" class="headerlink" title="安装Numix主题"></a>安装Numix主题</h4><p>我们将使用 Numix 的官方 PPA 来进行安装，先打开 终端 使用如下命令安装 Numix 主题和图标：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo add-apt-repository ppa:numix/ppa</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install numix-gtk-theme numix-icon-theme-circle</div></pre></td></tr></table></figure></p>
 <p><img src="/uploads/numix-1.png" alt=""></p>
-<p>如果想安装 Numix 桌面壁纸，可使用如下命令：<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install numix-wallpaper-*</div></pre></td></tr></table></figure></p>
+<p>如果想安装 Numix 桌面壁纸，可使用如下命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install numix-wallpaper-*</div></pre></td></tr></table></figure></p>
 <h4 id="安装flatabulous主题"><a href="#安装flatabulous主题" class="headerlink" title="安装flatabulous主题"></a>安装flatabulous主题</h4><p><img src="https://camo.githubusercontent.com/b50d6feac1815cdd43f9f246eb4ce5c671d6c1c1/687474703a2f2f692e696d6775722e636f6d2f365563694f4f4b2e706e67" alt="flatabulous"></p>
 <ul>
 <li><p>通过deb包来安装 适用  Debian, Ubuntu 等<br>可以从<a href="https://github.com/anmoljagetia/Flatabulous/releases/latest" target="_blank" rel="external">此处</a>下载</p>
 </li>
 <li><p>可以通过PPA来安装</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo add-apt-repository ppa:noobslab/themes</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install flatabulous-theme</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo add-apt-repository ppa:noobslab/themes</div><div class="line">sudo apt-get update</div><div class="line">sudo apt-get install flatabulous-theme</div></pre></td></tr></table></figure>
 </li>
 </ul>
 <p><img src="https://camo.githubusercontent.com/7f21a8ab158725c5b334da910f305a532cb0c1cb/687474703a2f2f692e696d6775722e636f6d2f383071435a47512e706e67" alt=""></p>
 <ul>
 <li><p>安装icons</p>
-<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo add-apt-repository ppa:noobslab/icons </div><div class="line">sudo apt-get update </div><div class="line">sudo apt-get install ultra-flat-icons</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">sudo add-apt-repository ppa:noobslab/icons </div><div class="line">sudo apt-get update </div><div class="line">sudo apt-get install ultra-flat-icons</div></pre></td></tr></table></figure>
 </li>
 <li><p>截图<br><img src="/uploads/flat-1.png" alt=""><br><img src="/uploads/flat-2.png" alt=""></p>
 </li>
 </ul>
 <h3 id="多安装些浏览器"><a href="#多安装些浏览器" class="headerlink" title="多安装些浏览器"></a>多安装些浏览器</h3><p>Linux Mint 18默认安装了firefox，你也可以获得更多的浏览器，如Chronium和Google Chrome。</p>
-<p>Chronium浏览器可以在仓库中获取。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> sudo apt-get install chromium-browser</div></pre></td></tr></table></figure></p>
-<p>至于Google Chrome，请访问google.com/chrome下载deb包，并使用gdebi来安装。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#</span> 64 位</div><div class="line"><span class="meta">$</span> wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb</div><div class="line"><span class="meta">$</span> sudo gdebi google-chrome-stable_current_amd64.deb</div><div class="line"> </div><div class="line"><span class="meta">#</span> 32 位</div><div class="line"><span class="meta">$</span> wget https://dl.google.com/linux/direct/google-chrome-stable_current_i386.deb</div><div class="line"><span class="meta">$</span> sudo gdebi google-chrome-stable_current_i386.deb</div></pre></td></tr></table></figure></p>
-<h3 id="安装rar和其它归档工具"><a href="#安装rar和其它归档工具" class="headerlink" title="安装rar和其它归档工具"></a>安装rar和其它归档工具</h3><p>要想在Nemo这样的文件管理器中通过上下文菜单创建rar归档，请安装rar工具。安装rar的同时，也可安装其它几个包以增加对其它归档格式的支持。<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> sudo apt-get install unace p7zip-rar sharutils rar arj lunzip lzip</div></pre></td></tr></table></figure></p>
+<p>Chronium浏览器可以在仓库中获取。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install chromium-browser</div></pre></td></tr></table></figure></p>
+<p>至于Google Chrome，请访问google.com/chrome下载deb包，并使用gdebi来安装。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"># 64 位</div><div class="line">$ wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb</div><div class="line">$ sudo gdebi google-chrome-stable_current_amd64.deb</div><div class="line"> </div><div class="line"># 32 位</div><div class="line">$ wget https://dl.google.com/linux/direct/google-chrome-stable_current_i386.deb</div><div class="line">$ sudo gdebi google-chrome-stable_current_i386.deb</div></pre></td></tr></table></figure></p>
+<h3 id="安装rar和其它归档工具"><a href="#安装rar和其它归档工具" class="headerlink" title="安装rar和其它归档工具"></a>安装rar和其它归档工具</h3><p>要想在Nemo这样的文件管理器中通过上下文菜单创建rar归档，请安装rar工具。安装rar的同时，也可安装其它几个包以增加对其它归档格式的支持。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ sudo apt-get install unace p7zip-rar sharutils rar arj lunzip lzip</div></pre></td></tr></table></figure></p>
 <h3 id="安装搜狗输入法"><a href="#安装搜狗输入法" class="headerlink" title="安装搜狗输入法"></a>安装搜狗输入法</h3><p>访问搜狗pinyin的网站 <a href="http://pinyin.sogou.com/linux/" target="_blank" rel="external">http://pinyin.sogou.com/linux/</a> ，下载最新的deb包。双击安装即可</p>
 <h3 id="安装网易云音乐"><a href="#安装网易云音乐" class="headerlink" title="安装网易云音乐"></a>安装网易云音乐</h3><p>访问网易云音乐的站点 <a href="http://music.163.com/#/download" target="_blank" rel="external">http://music.163.com/#/download</a> 下载最新的linux的版本即可。</p>
-<h3 id="安装-meta界面"><a href="#安装-meta界面" class="headerlink" title="安装 meta界面"></a>安装 meta界面</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install mint-meta-mate</div></pre></td></tr></table></figure>
+<h3 id="安装-meta界面"><a href="#安装-meta界面" class="headerlink" title="安装 meta界面"></a>安装 meta界面</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install mint-meta-mate</div></pre></td></tr></table></figure>
 <p>这样注销后重新登陆的时候就可以选择mate了</p>
 
       
@@ -470,7 +474,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-count">12</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
@@ -478,7 +482,7 @@
           
             <div class="site-state-item site-state-categories">
               <a href="/categories">
-                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -487,7 +491,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-count">7</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -546,7 +550,7 @@
         <div class="copyright" >
   
   &copy; 
-  <span itemprop="copyrightYear">2017</span>
+  <span itemprop="copyrightYear">2016</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>
