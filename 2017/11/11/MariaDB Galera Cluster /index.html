@@ -94,7 +94,7 @@
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="http://galeracluster.com/wp-content/uploads/2013/10/galera_replication1.png">
 <meta property="og:image" content="http://7xk2is.com1.z0.glb.clouddn.com/mariadb-galera-cluster.png">
-<meta property="og:updated_time" content="2017-11-10T03:02:33.437Z">
+<meta property="og:updated_time" content="2017-11-10T03:04:09.909Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="LVS + Keepalived + MariaDB Galera Cluster">
 <meta name="twitter:description" content="LVS + Keepalived + MariaDB Galera ClusterMariaDB Galera Cluster 介绍MariaDB集群是MariaDB同步多主机集群。它仅支持XtraDB/ InnoDB存储引擎（虽然有对MyISAM实验支持 - 看wsrep_replicate_myisam系统变量）。">
@@ -387,7 +387,7 @@
 </tr>
 </tbody>
 </table>
-<h2 id="Install-MariaDB-Galera-Cluster"><a href="#Install-MariaDB-Galera-Cluster" class="headerlink" title="Install MariaDB Galera Cluster"></a>Install MariaDB Galera Cluster</h2><p>登陆<a href="https://downloads.mariadb.org/mariadb/repositories/" target="_blank" rel="external">MariaDB Repositories</a>选择对应的操作系统和数据库版本，配置相应的repository，以下我们以CentOS 7，mariadb server 10.2为例。从10.1版本开始MariaDB 默认只支持galera cluster，需要在配置文件中打开<code>wsrep_on=on</code></p>
+<h2 id="Install-MariaDB-Galera-Cluster"><a href="#Install-MariaDB-Galera-Cluster" class="headerlink" title="Install MariaDB Galera Cluster"></a>Install MariaDB Galera Cluster</h2><p>登陆<a href="https://downloads.mariadb.org/mariadb/repositories/" target="_blank" rel="external">MariaDB Repositories</a>选择对应的操作系统和数据库版本，配置相应的repository，以下我们以CentOS 7，mariadb server 10.2为例。从10.1版本开始MariaDB 默认支持galera cluster，需要在配置文件中打开<code>wsrep_on=on</code></p>
 <h3 id="Add-Repository"><a href="#Add-Repository" class="headerlink" title="Add Repository"></a>Add Repository</h3><p>初始环境，CentOS7.3 最小化安装，系统更新到最新；关闭firewalld、selinux.</p>
 <figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">echo """</div><div class="line"><span class="meta">#</span> MariaDB 10.2 CentOS repository list - created 2017-11-10 01:21 UTC</div><div class="line"><span class="meta">#</span> http://downloads.mariadb.org/mariadb/repositories/</div><div class="line">[mariadb]</div><div class="line">name = MariaDB</div><div class="line">baseurl = http://yum.mariadb.org/10.2/centos7-amd64</div><div class="line">gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB</div><div class="line">gpgcheck=1</div><div class="line">""" &gt; /etc/yum.repos.d/MariaDB.repo</div></pre></td></tr></table></figure>
 <h3 id="Install-MariaDB-server-and-galera"><a href="#Install-MariaDB-server-and-galera" class="headerlink" title="Install MariaDB-server and galera"></a>Install MariaDB-server and galera</h3><h4 id="MariaDB-10-1-以上版本"><a href="#MariaDB-10-1-以上版本" class="headerlink" title="MariaDB 10.1 以上版本"></a>MariaDB 10.1 以上版本</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install MariaDB-server MariaDB-client MariaDB-shared MariaDB-common galera -y</div></pre></td></tr></table></figure>
