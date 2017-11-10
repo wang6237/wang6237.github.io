@@ -1,0 +1,721 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/vendors/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/vendors/font-awesome/css/font-awesome.min.css?v=4.4.0" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.0.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="galera cluster," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.0.1" />
+
+
+
+
+
+
+<meta name="description" content="LVS + Keepalived + MariaDB Galera ClusterMariaDB Galera Cluster 介绍MariaDB集群是MariaDB同步多主机集群。它仅支持XtraDB/ InnoDB存储引擎（虽然有对MyISAM实验支持 - 看wsrep_replicate_myisam系统变量）。">
+<meta name="keywords" content="galera cluster">
+<meta property="og:type" content="article">
+<meta property="og:title" content="LVS + Keepalived + MariaDB Galera Cluster">
+<meta property="og:url" content="http://www.z210.me/2017/11/11/MariaDB Galera Cluster /index.html">
+<meta property="og:site_name" content="记录点滴">
+<meta property="og:description" content="LVS + Keepalived + MariaDB Galera ClusterMariaDB Galera Cluster 介绍MariaDB集群是MariaDB同步多主机集群。它仅支持XtraDB/ InnoDB存储引擎（虽然有对MyISAM实验支持 - 看wsrep_replicate_myisam系统变量）。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://galeracluster.com/wp-content/uploads/2013/10/galera_replication1.png">
+<meta property="og:image" content="http://7xk2is.com1.z0.glb.clouddn.com/mariadb-galera-cluster.png">
+<meta property="og:updated_time" content="2017-11-10T03:02:33.437Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="LVS + Keepalived + MariaDB Galera Cluster">
+<meta name="twitter:description" content="LVS + Keepalived + MariaDB Galera ClusterMariaDB Galera Cluster 介绍MariaDB集群是MariaDB同步多主机集群。它仅支持XtraDB/ InnoDB存储引擎（虽然有对MyISAM实验支持 - 看wsrep_replicate_myisam系统变量）。">
+<meta name="twitter:image" content="http://galeracluster.com/wp-content/uploads/2013/10/galera_replication1.png">
+
+
+
+<script type="text/javascript" id="hexo.configuration">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    scheme: 'Mist',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 0,
+      author: '博主'
+    }
+  };
+</script>
+
+
+
+
+  <link rel="canonical" href="http://www.z210.me/2017/11/11/MariaDB Galera Cluster /"/>
+
+  <title> LVS + Keepalived + MariaDB Galera Cluster | 记录点滴 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">记录点滴</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                LVS + Keepalived + MariaDB Galera Cluster
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-11-11T11:00:00+08:00" content="2017-11-11">
+              2017-11-11
+            </time>
+          </span>
+
+          
+            <span class="post-category" >
+              &nbsp; | &nbsp;
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+              
+                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
+                  <a href="/categories/Mysql/" itemprop="url" rel="index">
+                    <span itemprop="name">Mysql</span>
+                  </a>
+                </span>
+
+                
+                
+
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="LVS-Keepalived-MariaDB-Galera-Cluster"><a href="#LVS-Keepalived-MariaDB-Galera-Cluster" class="headerlink" title="LVS + Keepalived + MariaDB Galera Cluster"></a>LVS + Keepalived + MariaDB Galera Cluster</h1><h2 id="MariaDB-Galera-Cluster-介绍"><a href="#MariaDB-Galera-Cluster-介绍" class="headerlink" title="MariaDB Galera Cluster 介绍"></a>MariaDB Galera Cluster 介绍</h2><p>MariaDB集群是MariaDB同步多主机集群。它仅支持XtraDB/ InnoDB存储引擎（虽然有对MyISAM实验支持 - 看wsrep_replicate_myisam系统变量）。</p>
+<p><img src="http://galeracluster.com/wp-content/uploads/2013/10/galera_replication1.png" alt=""></p>
+<a id="more"></a>
+<p>主要功能:</p>
+<ul>
+<li>同步复制</li>
+<li>真正的multi-master，即所有节点可以同时读写数据库</li>
+<li>自动的节点成员控制，失效节点自动被清除</li>
+<li>新节点加入数据自动复制</li>
+<li>真正的并行复制，行级</li>
+<li>用户可以直接连接集群，使用感受上与MySQL完全一致</li>
+</ul>
+<p>优势:</p>
+<ul>
+<li>因为是多主，所以不存在Slavelag(延迟)</li>
+<li>不存在丢失事务的情况</li>
+<li>同时具有读和写的扩展能力</li>
+<li>更小的客户端延迟</li>
+<li>节点间数据是同步的,而Master/Slave模式是异步的,不同slave上的binlog可能是不同的</li>
+</ul>
+<p>技术:</p>
+<p>Galera集群的复制功能基于Galeralibrary实现,为了让MySQL与Galera library通讯，特别针对MySQL开发了wsrep API。</p>
+<p>Galera插件保证集群同步数据，保持数据的一致性，靠的就是可认证的复制，工作原理如下图：<br><img src="http://7xk2is.com1.z0.glb.clouddn.com/mariadb-galera-cluster.png" alt=""><br>当客户端发出一个commit的指令，在事务被提交之前，所有对数据库的更改都会被 write-set 收集起来,并且将 write-set 纪录的内容发送给其他节点。</p>
+<p>write-set 将在每个节点进行认证测试，测试结果决定着节点是否应用write-set更改数据。</p>
+<p>如果认证测试失败，节点将丢弃 write-set ；如果认证测试成功，则事务提交。</p>
+<h2 id="实验环境"><a href="#实验环境" class="headerlink" title="实验环境"></a>实验环境</h2><table>
+<thead>
+<tr>
+<th>IP</th>
+<th>主机名</th>
+<th>操作系统</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>172.16.2.39</td>
+<td>lvs-master</td>
+<td>CentOS 7.3</td>
+<td>LVS 主节点</td>
+</tr>
+<tr>
+<td>172.16.2.40</td>
+<td>lvs-slave</td>
+<td>CentOS 7.3</td>
+<td>LVS 备用节点</td>
+</tr>
+<tr>
+<td>172.16.2.44</td>
+<td>dev-gc-node01</td>
+<td>CentOS 7.3</td>
+<td>Galera Cluster 节点1</td>
+</tr>
+<tr>
+<td>172.16.2.45</td>
+<td>dev-gc-node02</td>
+<td>CentOS 7.3</td>
+<td>Galera Cluster 节点2</td>
+</tr>
+<tr>
+<td>172.16.2.46</td>
+<td>dev-gc-node03</td>
+<td>CentOS 7.3</td>
+<td>Galera Cluster 节点3</td>
+</tr>
+</tbody>
+</table>
+<h2 id="Install-MariaDB-Galera-Cluster"><a href="#Install-MariaDB-Galera-Cluster" class="headerlink" title="Install MariaDB Galera Cluster"></a>Install MariaDB Galera Cluster</h2><p>登陆<a href="https://downloads.mariadb.org/mariadb/repositories/" target="_blank" rel="external">MariaDB Repositories</a>选择对应的操作系统和数据库版本，配置相应的repository，以下我们以CentOS 7，mariadb server 10.2为例。从10.1版本开始MariaDB 默认只支持galera cluster，需要在配置文件中打开<code>wsrep_on=on</code></p>
+<h3 id="Add-Repository"><a href="#Add-Repository" class="headerlink" title="Add Repository"></a>Add Repository</h3><p>初始环境，CentOS7.3 最小化安装，系统更新到最新；关闭firewalld、selinux.</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">echo """</div><div class="line"><span class="meta">#</span> MariaDB 10.2 CentOS repository list - created 2017-11-10 01:21 UTC</div><div class="line"><span class="meta">#</span> http://downloads.mariadb.org/mariadb/repositories/</div><div class="line">[mariadb]</div><div class="line">name = MariaDB</div><div class="line">baseurl = http://yum.mariadb.org/10.2/centos7-amd64</div><div class="line">gpgkey=https://yum.mariadb.org/RPM-GPG-KEY-MariaDB</div><div class="line">gpgcheck=1</div><div class="line">""" &gt; /etc/yum.repos.d/MariaDB.repo</div></pre></td></tr></table></figure>
+<h3 id="Install-MariaDB-server-and-galera"><a href="#Install-MariaDB-server-and-galera" class="headerlink" title="Install MariaDB-server and galera"></a>Install MariaDB-server and galera</h3><h4 id="MariaDB-10-1-以上版本"><a href="#MariaDB-10-1-以上版本" class="headerlink" title="MariaDB 10.1 以上版本"></a>MariaDB 10.1 以上版本</h4><figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">yum install MariaDB-server MariaDB-client MariaDB-shared MariaDB-common galera -y</div></pre></td></tr></table></figure>
+<p>官方文档 <a href="https://mariadb.com/kb/en/library/yum/#installing-mariadb-galera-cluster-with-yum" target="_blank" rel="external">Installing MariaDB with yum</a></p>
+<p>以上操作需要在所以数据库集群节点上执行，并且成功.</p>
+<h3 id="配置-mariadb-galera-cluster"><a href="#配置-mariadb-galera-cluster" class="headerlink" title="配置 mariadb galera cluster"></a>配置 mariadb galera cluster</h3><p>初始化数据库服务，只在一个节点进行</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line">[root@dev-gc-node01 mariadb]# systemctl start mariadb</div><div class="line">[root@dev-gc-node01 mariadb]# mysql_secure_installation</div><div class="line"></div><div class="line">NOTE: RUNNING ALL PARTS OF THIS SCRIPT IS RECOMMENDED FOR ALL MariaDB</div><div class="line">      SERVERS IN PRODUCTION USE!  PLEASE READ EACH STEP CAREFULLY!</div><div class="line"></div><div class="line">In order to log into MariaDB to secure it, we&apos;ll need the current</div><div class="line">password for the root user.  If you&apos;ve just installed MariaDB, and</div><div class="line">you haven&apos;t set the root password yet, the password will be blank,</div><div class="line">so you should just press enter here.</div><div class="line"></div><div class="line">Enter current password for root (enter for none):</div><div class="line">OK, successfully used password, moving on...</div><div class="line"></div><div class="line">Setting the root password ensures that nobody can log into the MariaDB</div><div class="line">root user without the proper authorisation.</div><div class="line"></div><div class="line">Set root password? [Y/n]</div><div class="line">New password:</div><div class="line">Re-enter new password:</div><div class="line">Password updated successfully!</div><div class="line">Reloading privilege tables..</div><div class="line"> ... Success!</div><div class="line"></div><div class="line"></div><div class="line">By default, a MariaDB installation has an anonymous user, allowing anyone</div><div class="line">to log into MariaDB without having to have a user account created for</div><div class="line">them.  This is intended only for testing, and to make the installation</div><div class="line">go a bit smoother.  You should remove them before moving into a</div><div class="line">production environment.</div><div class="line"></div><div class="line">Remove anonymous users? [Y/n] n</div><div class="line"> ... skipping.</div><div class="line"></div><div class="line">Normally, root should only be allowed to connect from &apos;localhost&apos;.  This</div><div class="line">ensures that someone cannot guess at the root password from the network.</div><div class="line"></div><div class="line">Disallow root login remotely? [Y/n] y</div><div class="line"> ... Success!</div><div class="line"></div><div class="line">By default, MariaDB comes with a database named &apos;test&apos; that anyone can</div><div class="line">access.  This is also intended only for testing, and should be removed</div><div class="line">before moving into a production environment.</div><div class="line"></div><div class="line">Remove test database and access to it? [Y/n] n</div><div class="line"> ... skipping.</div><div class="line"></div><div class="line">Reloading the privilege tables will ensure that all changes made so far</div><div class="line">will take effect immediately.</div><div class="line"></div><div class="line">Reload privilege tables now? [Y/n] y</div><div class="line"> ... Success!</div><div class="line"></div><div class="line">Cleaning up...</div><div class="line"></div><div class="line">All done!  If you&apos;ve completed all of the above steps, your MariaDB</div><div class="line">installation should now be secure.</div><div class="line"></div><div class="line">Thanks for using MariaDB!</div></pre></td></tr></table></figure>
+<h3 id="关闭数据库，修改-etc-my-cnf"><a href="#关闭数据库，修改-etc-my-cnf" class="headerlink" title="关闭数据库，修改/etc/my.cnf"></a>关闭数据库，修改/etc/my.cnf</h3><p>内容如下:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">[mysqld]</div><div class="line">datadir=/var/lib/mysql</div><div class="line">socket=/var/lib/mysql/mysql.sock</div><div class="line">user=mysql</div><div class="line"># mariadb 10.1版本后默认支持galera cluster</div><div class="line">wsrep_on=on</div><div class="line"># 为了使用 Percona Monitoring and Management 监控数据库。</div><div class="line">performance_schema=on</div><div class="line">skip-host-cache</div><div class="line">skip-name-resolve</div><div class="line">#使用galera一定要是ROW格式而不能是SQL格式，不然会影响性能和一致性</div><div class="line">binlog_format=ROW</div><div class="line">##不要bind到本地地址，例如127.0.0.1，这样其他机器无法访问</div><div class="line">bind-address=0.0.0.0</div><div class="line">##galera在非事务性的存储引擎，例如MyISAM上无法工作</div><div class="line">default_storage_engine=innodb</div><div class="line">##AUTO_INCREMENT字段，全部使用interleaved lock mode，此种方式不适用于SQL模式的日志复制，但是比较适合ROW模式，由于insert语句不使用表级auto-inc lock，所以速度比较快</div><div class="line">innodb_autoinc_lock_mode=2</div><div class="line">##为了提高性能，galera官方建议使用1s刷一次日志的方式，但是同时也是不安全的方式，如果有备用电源，我认为设置为2比较好</div><div class="line">innodb_flush_log_at_trx_commit=0</div><div class="line">#</div><div class="line"># #几台机器的必须一样，用来区分不同的集群</div><div class="line">wsrep_cluster_name=DevCluster</div><div class="line"># #这个插件位置最关键，没有的话运行不起来</div><div class="line">wsrep_provider=/usr/lib64/galera/libgalera_smm.so</div><div class="line"># #这个就是从谁那儿同步，后面可以是用逗号分隔开来的IP或者域名</div><div class="line">wsrep_cluster_address=gcomm://172.16.2.44,172.16.2.46</div><div class="line"># #本地连出去的时候用的地址</div><div class="line">wsrep_node_address=172.16.2.45</div><div class="line"># 可以不使用</div><div class="line">#wsrep_sst_auth=sst:sstpass123</div><div class="line">#</div><div class="line">#  #如果你没看文档，还是不要配了</div><div class="line">#wsrep_provider_options=&quot;gcache.size=300M; gcache.page_size=300M&quot;</div><div class="line">wsrep_provider_options=&quot;gcache.size=2G&quot;</div><div class="line">#</div><div class="line">#   #sst(State Snapshot Transfer)的默认同步方式就是rysnc，具体请参考：http://galeracluster.com/documentation-webpages/sst.html</div><div class="line">wsrep_sst_method = xtrabackup</div><div class="line">#</div><div class="line">[mysql_safe]</div><div class="line">log-error=/var/log/mysqld.log</div><div class="line">pid-file=/var/run/mysqld/mysqld.pid</div></pre></td></tr></table></figure>
+<p>以上内容每个数据节点都一样，只有<code>wsrep_cluster_address</code> 和 <code>wsrep_node_address</code>,需要修改成对应主机的即可。</p>
+<h3 id="初始化"><a href="#初始化" class="headerlink" title="初始化"></a>初始化</h3><p>在dev-gc-node01上执行,</p>
+<p>操作系统用systemd的</p>
+<ul>
+<li><code>galera_new_cluster</code> （这个命令是在 MariaDB Server 10.1 版本以后出现的，如果低于此版本的则使用<code>service start mysql --wsrep-new-cluster</code>）</li>
+</ul>
+<p><strong><em>此命令只执行一次。</em></strong></p>
+<p>带主节点启动成功后再启动其他节点</p>
+<p>其他节点上执行</p>
+<p><code>systemctl start mysql</code></p>
+<h3 id="查看集群状态"><a href="#查看集群状态" class="headerlink" title="查看集群状态"></a>查看集群状态</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line">MariaDB [(none)]&gt; SHOW STATUS LIKE &apos;wsrep%&apos;;</div><div class="line">+------------------------------+----------------------------------------------------+</div><div class="line">| Variable_name                | Value                                              |</div><div class="line">+------------------------------+----------------------------------------------------+</div><div class="line">| wsrep_apply_oooe             | 0.000000                                           |</div><div class="line">| wsrep_apply_oool             | 0.000000                                           |</div><div class="line">| wsrep_apply_window           | 1.000000                                           |</div><div class="line">| wsrep_causal_reads           | 0                                                  |</div><div class="line">| wsrep_cert_deps_distance     | 1.200190                                           |</div><div class="line">| wsrep_cert_index_size        | 6                                                  |</div><div class="line">| wsrep_cert_interval          | 0.000000                                           |</div><div class="line">| wsrep_cluster_conf_id        | 57                                                 |</div><div class="line">| wsrep_cluster_size           | 3                                                  |</div><div class="line">| wsrep_cluster_state_uuid     | bcbd9e45-c2c7-11e7-b693-0e1be4311c66               |</div><div class="line">| wsrep_cluster_status         | Primary                                            |</div><div class="line">| wsrep_commit_oooe            | 0.000000                                           |</div><div class="line">| wsrep_commit_oool            | 0.000000                                           |</div><div class="line">| wsrep_commit_window          | 1.000000                                           |</div><div class="line">| wsrep_connected              | ON                                                 |</div><div class="line">| wsrep_desync_count           | 0                                                  |</div><div class="line">| wsrep_evs_delayed            |                                                    |</div><div class="line">| wsrep_evs_evict_list         |                                                    |</div><div class="line">| wsrep_evs_repl_latency       | 0/0/0/0/0                                          |</div><div class="line">| wsrep_evs_state              | OPERATIONAL                                        |</div><div class="line">| wsrep_flow_control_paused    | 0.000000                                           |</div><div class="line">| wsrep_flow_control_paused_ns | 0                                                  |</div><div class="line">| wsrep_flow_control_recv      | 0                                                  |</div><div class="line">| wsrep_flow_control_sent      | 0                                                  |</div><div class="line">| wsrep_gcomm_uuid             | 76a3c981-c52d-11e7-af93-6e736044e227               |</div><div class="line">| wsrep_incoming_addresses     | 172.16.2.46:3306,172.16.2.44:3306,172.16.2.45:3306 |</div><div class="line">| wsrep_last_committed         | 14107                                              |</div><div class="line">| wsrep_local_bf_aborts        | 0                                                  |</div><div class="line">| wsrep_local_cached_downto    | 10951                                              |</div><div class="line">| wsrep_local_cert_failures    | 0                                                  |</div><div class="line">| wsrep_local_commits          | 3                                                  |</div><div class="line">| wsrep_local_index            | 1                                                  |</div><div class="line">| wsrep_local_recv_queue       | 0                                                  |</div><div class="line">| wsrep_local_recv_queue_avg   | 0.000310                                           |</div><div class="line">| wsrep_local_recv_queue_max   | 2                                                  |</div><div class="line">| wsrep_local_recv_queue_min   | 0                                                  |</div><div class="line">| wsrep_local_replays          | 0                                                  |</div><div class="line">| wsrep_local_send_queue       | 0                                                  |</div><div class="line">| wsrep_local_send_queue_avg   | 0.000000                                           |</div><div class="line">| wsrep_local_send_queue_max   | 1                                                  |</div><div class="line">| wsrep_local_send_queue_min   | 0                                                  |</div><div class="line">| wsrep_local_state            | 4                                                  |</div><div class="line">| wsrep_local_state_comment    | Synced                                             |</div><div class="line">| wsrep_local_state_uuid       | bcbd9e45-c2c7-11e7-b693-0e1be4311c66               |</div><div class="line">| wsrep_protocol_version       | 7                                                  |</div><div class="line">| wsrep_provider_name          | Galera                                             |</div><div class="line">| wsrep_provider_vendor        | Codership Oy &lt;info@codership.com&gt;                  |</div><div class="line">| wsrep_provider_version       | 25.3.20(r3703)                                     |</div><div class="line">| wsrep_ready                  | ON                                                 |</div><div class="line">| wsrep_received               | 3230                                               |</div><div class="line">| wsrep_received_bytes         | 1664490                                            |</div><div class="line">| wsrep_repl_data_bytes        | 3079                                               |</div><div class="line">| wsrep_repl_keys              | 9                                                  |</div><div class="line">| wsrep_repl_keys_bytes        | 141                                                |</div><div class="line">| wsrep_repl_other_bytes       | 0                                                  |</div><div class="line">| wsrep_replicated             | 3                                                  |</div><div class="line">| wsrep_replicated_bytes       | 3412                                               |</div><div class="line">| wsrep_thread_count           | 2                                                  |</div><div class="line">+------------------------------+----------------------------------------------------+</div><div class="line">58 rows in set (0.00 sec)</div></pre></td></tr></table></figure>
+<p>我们可以关注几个关键的参数：</p>
+<p><code>wsrep_connected = on</code> 链接已开启</p>
+<p><code>wsrep_local_index = 1</code> 在集群中的索引值</p>
+<p><code>wsrep_cluster_size =3</code> 集群中节点的数量</p>
+<p><code>wsrep_incoming_addresses = 172.16.2.46:3306,172.16.2.44:3306,172.16.2.45:3306</code> 集群中节点的访问地址</p>
+<h3 id="验证数据同步"><a href="#验证数据同步" class="headerlink" title="验证数据同步"></a>验证数据同步</h3><p>dev-gc-node01 节点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">[root@dev-gc-node01 ~]# mysql -u root -p -e &apos;show databases;&apos;</div><div class="line">Enter password:</div><div class="line">+--------------------+</div><div class="line">| Database           |</div><div class="line">+--------------------+</div><div class="line">| information_schema |</div><div class="line">| mysql              |</div><div class="line">| performance_schema |</div><div class="line">| test               |</div><div class="line">+--------------------+</div><div class="line">[root@dev-gc-node01 ~]# mysql -u root -p -e &apos;create database mytest;&apos;</div><div class="line">Enter password:</div><div class="line">[root@dev-gc-node01 ~]# mysql -u root -p -e &apos;show databases;&apos;</div><div class="line">Enter password:</div><div class="line">+--------------------+</div><div class="line">| Database           |</div><div class="line">+--------------------+</div><div class="line">| information_schema |</div><div class="line">| mysql              |</div><div class="line">| mytest             |</div><div class="line">| performance_schema |</div><div class="line">| test               |</div><div class="line">+--------------------+</div><div class="line">[root@dev-gc-node01 ~]#</div></pre></td></tr></table></figure>
+<p>dev-gc-node02 节点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[root@dev-gc-node02 ~]# mysql -u root -p -e &apos;show databases;&apos;</div><div class="line">Enter password:</div><div class="line">+--------------------+</div><div class="line">| Database           |</div><div class="line">+--------------------+</div><div class="line">| information_schema |</div><div class="line">| mysql              |</div><div class="line">| mytest             |</div><div class="line">| performance_schema |</div><div class="line">| test               |</div><div class="line">+--------------------+</div><div class="line">[root@dev-gc-node02 ~]#</div></pre></td></tr></table></figure>
+<p>dev-gc-node03 节点</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">[root@dev-gc-node03 ~]# mysql -u root -p -e &apos;show databases;&apos;</div><div class="line">Enter password:</div><div class="line">+--------------------+</div><div class="line">| Database           |</div><div class="line">+--------------------+</div><div class="line">| information_schema |</div><div class="line">| mysql              |</div><div class="line">| mytest             |</div><div class="line">| performance_schema |</div><div class="line">| test               |</div><div class="line">+--------------------+</div><div class="line">[root@dev-gc-node03 ~]#</div></pre></td></tr></table></figure>
+<p>至此，我们的 MariaDB Galera Cluster 已经成功部署。</p>
+<p>但是，这样的有个问题，那就是client的数据库要配置多个数据库地址，不够友好。</p>
+<p>解决这个问题有多种方案，Haproxy、Galera Load Balancer、Pen、LVS、ProxySQL等等</p>
+<p>这里我们选择LVS，安装太简单了，不写了，不会的请自行google。</p>
+<h2 id="配置Keepalived"><a href="#配置Keepalived" class="headerlink" title="配置Keepalived"></a>配置Keepalived</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">global_defs &#123;</div><div class="line">  router_id lb-dev</div><div class="line">&#125;</div><div class="line">vrrp_instance mysql_galera &#123;</div><div class="line">  interface ens160</div><div class="line">  state MASTER</div><div class="line">  virtual_router_id 10</div><div class="line">  priority 110</div><div class="line">  track_interface &#123;</div><div class="line">    ens160</div><div class="line">  &#125;</div><div class="line">  virtual_ipaddress &#123;</div><div class="line">    172.16.2.47 dev ens160</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line">virtual_server 172.16.2.47 3306 &#123;</div><div class="line">  delay_loop 2</div><div class="line">  lb_algo rr</div><div class="line">  lb_kind DR</div><div class="line">  protocol TCP</div><div class="line">  real_server 172.16.2.44 3306 &#123;</div><div class="line">    weight 10</div><div class="line">    TCP_CHECK &#123;</div><div class="line">      connect_port    3306</div><div class="line">      connect_timeout 1</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  real_server 172.16.2.45 3306 &#123;</div><div class="line">    weight 10</div><div class="line">    TCP_CHECK &#123;</div><div class="line">      connect_port    3306</div><div class="line">      connect_timeout 1</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  real_server 172.16.2.46 3306 &#123;</div><div class="line">    weight 10</div><div class="line">    TCP_CHECK &#123;</div><div class="line">      connect_port    3306</div><div class="line">      connect_timeout 1</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这样我们就可以使用VIP，172.16.2.47 来连接数据库了。:-)</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/galera-cluster/" rel="tag">#galera cluster</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/05/20/Use-kubeadm-offline-installer/" rel="next" title="Use-kubeadm-offline-installer">
+                <i class="fa fa-chevron-left"></i> Use-kubeadm-offline-installer
+              </a>
+            
+          </div>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel ">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="wang6237" />
+          <p class="site-author-name" itemprop="name">wang6237</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+            <div class="site-state-item site-state-categories">
+              <a href="/categories">
+                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">9</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/wang6237" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+      </section>
+
+      
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+            
+              
+            
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#LVS-Keepalived-MariaDB-Galera-Cluster"><span class="nav-number">1.</span> <span class="nav-text">LVS + Keepalived + MariaDB Galera Cluster</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#MariaDB-Galera-Cluster-介绍"><span class="nav-number">1.1.</span> <span class="nav-text">MariaDB Galera Cluster 介绍</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#实验环境"><span class="nav-number">1.2.</span> <span class="nav-text">实验环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Install-MariaDB-Galera-Cluster"><span class="nav-number">1.3.</span> <span class="nav-text">Install MariaDB Galera Cluster</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Add-Repository"><span class="nav-number">1.3.1.</span> <span class="nav-text">Add Repository</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Install-MariaDB-server-and-galera"><span class="nav-number">1.3.2.</span> <span class="nav-text">Install MariaDB-server and galera</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MariaDB-10-1-以上版本"><span class="nav-number">1.3.2.1.</span> <span class="nav-text">MariaDB 10.1 以上版本</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#配置-mariadb-galera-cluster"><span class="nav-number">1.3.3.</span> <span class="nav-text">配置 mariadb galera cluster</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关闭数据库，修改-etc-my-cnf"><span class="nav-number">1.3.4.</span> <span class="nav-text">关闭数据库，修改/etc/my.cnf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化"><span class="nav-number">1.3.5.</span> <span class="nav-text">初始化</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#查看集群状态"><span class="nav-number">1.3.6.</span> <span class="nav-text">查看集群状态</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#验证数据同步"><span class="nav-number">1.3.7.</span> <span class="nav-text">验证数据同步</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#配置Keepalived"><span class="nav-number">1.4.</span> <span class="nav-text">配置Keepalived</span></a></li></ol></li></ol></div>
+            
+          </div>
+        </section>
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">wang6237</span>
+</div>
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Mist
+  </a>
+</div>
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/vendors/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/vendors/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/vendors/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.0.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.0.1"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.0.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.0.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.0.1"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
