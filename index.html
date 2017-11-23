@@ -256,6 +256,99 @@
             
               
                 
+                <a class="post-title-link" href="/2017/11/10/Update-MariaDB-Galera-Cluster/" itemprop="url">
+                  未命名
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            <span class="post-meta-item-icon">
+              <i class="fa fa-calendar-o"></i>
+            </span>
+            <span class="post-meta-item-text">发表于</span>
+            <time itemprop="dateCreated" datetime="2017-11-10T13:40:31+08:00" content="2017-11-10">
+              2017-11-10
+            </time>
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
                 <a class="post-title-link" href="/2017/11/10/MariaDB Galera Cluster /" itemprop="url">
                   LVS + Keepalived + MariaDB Galera Cluster
                 </a>
@@ -434,83 +527,13 @@
 
       
         
-          
-            <h1 id="检查集群状态-Monitoring-Cluster-Status"><a href="#检查集群状态-Monitoring-Cluster-Status" class="headerlink" title="检查集群状态(Monitoring Cluster Status)"></a>检查集群状态(Monitoring Cluster Status)</h1><p>从客户端查询wsrep_开头的变量，</p>
+          <h1 id="检查集群状态-Monitoring-Cluster-Status"><a href="#检查集群状态-Monitoring-Cluster-Status" class="headerlink" title="检查集群状态(Monitoring Cluster Status)"></a>检查集群状态(Monitoring Cluster Status)</h1><p>从客户端查询wsrep_开头的变量，</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">SHOW GLOBAL STATUS LIKE &apos;wsrep_%&apos;;</div><div class="line">+------------------------+-------+</div><div class="line">| Variable_name          | Value |</div><div class="line">+------------------------+-------+</div><div class="line">| wsrep_protocol_version | 5     |</div><div class="line">| wsrep_last_committed   | 202   |</div><div class="line">| ...					 | ...   |	</div><div class="line">| wsrep_thread_count     | 2     |</div><div class="line">+------------------------+-------+</div></pre></td></tr></table></figure>
-<blockquote>
-<p>也可以在集群成员中通过wsrep_notify_cmd.sh查看状态，详情参见Notification Command</p>
-</blockquote>
-<h2 id="检查集群完整性-Checking-Cluster-Integrity"><a href="#检查集群完整性-Checking-Cluster-Integrity" class="headerlink" title="检查集群完整性(Checking Cluster Integrity)"></a>检查集群完整性(Checking Cluster Integrity)</h2><h3 id="wsrep-cluster-state-uuid"><a href="#wsrep-cluster-state-uuid" class="headerlink" title="wsrep_cluster_state_uuid"></a>wsrep_cluster_state_uuid</h3><p>显示集群状态的UUID，你能查询到节点是否是集群的一部分。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">SHOW GLOBAL STATUS LIKE &apos;wsrep_cluster_state_uuid&apos;;</div><div class="line"></div><div class="line">+--------------------------+--------------------------------------+</div><div class="line">| Variable_name            | Value                                |</div><div class="line">+--------------------------+--------------------------------------+</div><div class="line">| wsrep_cluster_state_uuid | d6a51a3a-b378-11e4-924b-23b6ec126a13 |</div><div class="line">+--------------------------+--------------------------------------+</div></pre></td></tr></table></figure>
-<blockquote>
-<p>每个节点都显示相同的结果，如果发现不同的结果，则表示此节点已经长时间没有连接集群了，需要重新调整，建立连接。</p>
-</blockquote>
-<h3 id="wsrep-cluster-conf-id"><a href="#wsrep-cluster-conf-id" class="headerlink" title="wsrep_cluster_conf_id"></a>wsrep_cluster_conf_id</h3><p>显示已发生的集群更改的总数，你可以用于确定节点是否属于主节点的一部分。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">SHOW GLOBAL STATUS LIKE &apos;wsrep_cluster_conf_id&apos;;</div><div class="line"></div><div class="line">+-----------------------+-------+</div><div class="line">| Variable_name         | Value |</div><div class="line">+-----------------------+-------+</div><div class="line">| wsrep_cluster_conf_id | 32    |</div><div class="line">+-----------------------+-------+</div></pre></td></tr></table></figure>
-<blockquote>
-<p>集群中的每个节点都应该提供相同的值。当一个节点携带不同的节点时，这表示集群是分区的。一旦节点重新建立网络连接，该值就会与其他节点保持一致。</p>
-</blockquote>
-<h3 id="wsrep-cluster-size"><a href="#wsrep-cluster-size" class="headerlink" title="wsrep_cluster_size"></a>wsrep_cluster_size</h3><p>显示集群中的节点数量，您可以使用这些节点来确定是否有丢失的节点。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SHOW GLOBAL STATUS LIKE &apos;wsrep_cluster_size&apos;;</div><div class="line">+--------------------+-------+</div><div class="line">| Variable_name      | Value |</div><div class="line">+--------------------+-------+</div><div class="line">| wsrep_cluster_size | 15    |</div><div class="line">+--------------------+-------+</div></pre></td></tr></table></figure>
-<blockquote>
-<p>您可以在任何节点上运行该检查。当该检查返回的值低于集群中的节点数时，这意味着一些节点已经失去了网络连接，或者它们已经失败了。</p>
-</blockquote>
-<h3 id="wsrep-cluster-status"><a href="#wsrep-cluster-status" class="headerlink" title="wsrep_cluster_status"></a>wsrep_cluster_status</h3><p>显示节点所在的集群组件的主要状态，您可以使用它来确定集群是否正在经历一个分区。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SHOW GLOBAL STATUS LIKE &apos;wsrep_cluster_status&apos;;</div><div class="line">+----------------------+---------+</div><div class="line">| Variable_name        | Value   |</div><div class="line">+----------------------+---------+</div><div class="line">| wsrep_cluster_status | Primary |</div><div class="line">+----------------------+---------+</div></pre></td></tr></table></figure>
-<blockquote>
-<p>该节点只返回一个主值。任何其他值都表明该节点是nonop-ercomponent组件的一部分。这种情况发生在多成员改变的情况下，导致了法定人数的减少或者是在大脑中出现了分裂的情况。</p>
-</blockquote>
-<p>当这些状态变量检查并返回每个节点所需的结果时，集群就会出现并具有完整性。这意味着复制能够在每个节点上正常地发生。接下来的步骤是检查节点状态，以确保它们都处于工作状态并能够接收写集。</p>
-<h2 id="检查节点状态-Checking-the-Node-Status"><a href="#检查节点状态-Checking-the-Node-Status" class="headerlink" title="检查节点状态(Checking the Node Status)"></a>检查节点状态(Checking the Node Status)</h2><p>除了检查集群完整性之外，还可以监查各个节点的状态。这将显示节点是否接收和处理来自集群的写入集的更新，并且可以指出可能阻止复制的问题。</p>
-<h3 id="wsrep-ready"><a href="#wsrep-ready" class="headerlink" title="wsrep_ready"></a>wsrep_ready</h3><p>显示该节点是否可以接受查询。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SHOW GLOBAL STATUS LIKE &apos;wsrep_ready&apos;;</div><div class="line">+---------------+-------+</div><div class="line">| Variable_name | Value |</div><div class="line">+---------------+-------+</div><div class="line">| wsrep_ready   | ON    |</div><div class="line">+---------------+-------+</div></pre></td></tr></table></figure>
-<blockquote>
-<p>当节点返回一个ON时，它可以接受来自集群的写集。当它返回OFF时，几乎所有的查询都失败了:</p>
-</blockquote>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ERROR 1047 (08501) Unknown Command</div></pre></td></tr></table></figure>
-<h3 id="wsrep-connected"><a href="#wsrep-connected" class="headerlink" title="wsrep_connected"></a>wsrep_connected</h3><p>显示该节点是否具有与其他节点的网络连接。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SHOW GLOBAL STATUS LIKE &apos;wsrep_connected&apos;;</div><div class="line">+-----------------+-------+</div><div class="line">| Variable_name   | Value |</div><div class="line">+-----------------+-------+</div><div class="line">| wsrep_connected | ON    |</div><div class="line">+-----------------+-------+</div></pre></td></tr></table></figure>
-<p>当值处于ON状态时，节点与一个或多个其他节点的网络连接形成一个集群compo-nent。当值OFF时，该节点与任何集群组件都没有连接。</p>
-<blockquote>
-<p>注意:连接丢失的原因也可能与错误配置有关。例如，如果节点为wsrep_cluster_address或wsrep_cluster_name参数使用无效值。检查错误日志以获得正确的诊断。</p>
-</blockquote>
-<h3 id="wsrep-local-state-comment"><a href="#wsrep-local-state-comment" class="headerlink" title="wsrep_local_state_comment"></a>wsrep_local_state_comment</h3><p>以人类可读的格式显示节点状态。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SHOW GLOBAL STATUS LIKE &apos;wsrep_local_state_comment&apos;;</div><div class="line">+---------------------------+--------+</div><div class="line">| Variable_name             | Value  |</div><div class="line">+---------------------------+--------+</div><div class="line">| wsrep_local_state_comment | Synced |</div><div class="line">+---------------------------+--------+</div></pre></td></tr></table></figure>
-<p>当节点是主组件的一部分时，典型的返回值将Joining，Waiting on SST、Joined、Synced或Donor。如果节点是 a nonoperational component的一部分，则返回值为Initialized。</p>
-<blockquote>
-<p>如果节点返回除这里列出的任何值以外的值，则状态注释是瞬时的和临时的。再次检查状态变量，以获得更新。</p>
-</blockquote>
-<p>如果每个状态变量返回所需的值，那么节点就处于工作状态。这意味着它正在从集群中接收写集，并将它们复制到本地数据库中的表中。</p>
-<h2 id="检查复制健康状态-Checking-the-Replication-Health"><a href="#检查复制健康状态-Checking-the-Replication-Health" class="headerlink" title="检查复制健康状态(Checking the Replication Health)"></a>检查复制健康状态(Checking the Replication Health)</h2><p>监视集群完整性和节点状态可以显示可能阻止或阻止复制的问题。这些状态变量将有助于识别性能问题和识别问题区域，以便您能够从集群中获得最大的收益。</p>
-<blockquote>
-<p>与其他状态变量不同的是，这些变量在每个刷新状态命令中都是不同的，并被重新设置。</p>
-</blockquote>
-<p>Galera集群触发一个称为Flow Control的反馈机制来管理复制过程。当本地接收到的写集队列超过某个阈值时，该节点将在它赶上的时候进行Flow Control，以暂停复制。<br>您可以使用以下状态变量来监视本地接收的队列和Flow Control。</p>
-<h3 id="wsrep-local-recv-queue-avg"><a href="#wsrep-local-recv-queue-avg" class="headerlink" title="wsrep_local_recv_queue_avg"></a>wsrep_local_recv_queue_avg</h3><p>显示自上次状态查询以来本地接收队列的平均大小。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SHOW STATUS LIKE &apos;wsrep_local_recv_queue_avg&apos;;</div><div class="line">+----------------------------+----------+</div><div class="line">| Variable_name              | Value    |</div><div class="line">+----------------------------+----------+</div><div class="line">| wsrep_local_recv_queue_avg | 0.060122 |</div><div class="line">+----------------------------+----------+</div></pre></td></tr></table></figure>
-<p>当节点返回高于0.0的值时，这意味着该节点不能像接收到的那样快速地应用写集，这会导致复制节流。</p>
-<blockquote>
-<p>除了这个状态变量之外，您还可以使用wsrep_local_recv_queue_max和wsrep_local_recv_queue_min来查看本地接收到的队列的最大和最小大小。</p>
-</blockquote>
-<h3 id="wsrep-flow-control-paused"><a href="#wsrep-flow-control-paused" class="headerlink" title="wsrep_flow_control_paused"></a>wsrep_flow_control_paused</h3><p>由于刷新状态是最后一次调用，所以该节点暂停了，因为该节点是由于流控制而暂停的。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SHOW STATUS LIKE &apos;wsrep_flow_control_paused&apos;;</div><div class="line">+---------------------------+----------+</div><div class="line">| Variable_name             | Value    |</div><div class="line">+---------------------------+----------+</div><div class="line">| wsrep_flow_control_paused | 0.000096 |</div><div class="line">+---------------------------+----------+</div></pre></td></tr></table></figure>
-<p>当节点返回值为0.0时，它表示该节点在此期间没有停止流控制。当节点返回值为1.0时，它表示整个时间段的节点都暂停了。如果在刷新状态和显示状态之间的时间是1分钟，节点返回0.25，那么在此期间，节点被暂停了15秒。</p>
-<p>理想情况下，返回值应该尽可能接近0.0，因为这意味着节点不会落在集群后面。如果您发现节点频繁地暂停，您可以调整wsrep_slave_threads参数，或者您可以将该节点从集群中排除。</p>
-<h3 id="wsrep-cert-deps-distance"><a href="#wsrep-cert-deps-distance" class="headerlink" title="wsrep_cert_deps_distance"></a>wsrep_cert_deps_distance</h3><p>显示了最低和最高序列号之间的平均距离，也就是节点可以并行应用的值。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SHOW STATUS LIKE &apos;wsrep_cert_deps_distance&apos;;</div><div class="line">+--------------------------+-----------+</div><div class="line">| Variable_name            | Value     |</div><div class="line">+--------------------------+-----------+</div><div class="line">| wsrep_cert_deps_distance | 11.790451 |</div><div class="line">+--------------------------+-----------+</div></pre></td></tr></table></figure>
-<p>这表示节点的并行化的潜在程度。换句话说，您可以使用wsrep_slave_threads参数来使用最优值，因为没有理由可以分配更多的slave线程，而不是可以并行应用的事务。</p>
-<h2 id="查询网络慢的问题-Detecting-Slow-Netword-Issues"><a href="#查询网络慢的问题-Detecting-Slow-Netword-Issues" class="headerlink" title="查询网络慢的问题(Detecting Slow Netword Issues)"></a>查询网络慢的问题(Detecting Slow Netword Issues)</h2><p>在检查Flow Control的状态和接收到的队列可以告诉您数据库服务器如何处理传入的写集时，您可以检查发送队列以监视传出的连接问题。</p>
-<blockquote>
-<p>与其他状态变量不同的是，这些变量在每个FLUSH STATUS命令中都是不同的。</p>
-</blockquote>
-<h3 id="wsrep-local-send-queue-avg"><a href="#wsrep-local-send-queue-avg" class="headerlink" title="wsrep_local_send_queue_avg"></a>wsrep_local_send_queue_avg</h3><p>显示了自上一次刷新状态以来发送队列长度的平均值查询。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">SHOW STATUS LIKE &apos;wsrep_local_send_queue_avg&apos;;</div><div class="line">+----------------------------+----------+</div><div class="line">| Variable_name              | Value    |</div><div class="line">+----------------------------+----------+</div><div class="line">| wsrep_local_send_queue_avg | 0.701777 |</div><div class="line">+----------------------------+----------+</div></pre></td></tr></table></figure>
-<p>比0.0更大的值表示复制节流或网络吞吐量问题，例如网络链接的瓶颈。问题可能出现在任何一层，从服务器的物理组件到操作系统的配置。</p>
-<blockquote>
-<p>除了这个状态变量之外，您还可以使用wsrep_local_send_queue_max和wsrep_local_send_queue_min来查看本地发送队列所记录的节点的最大和最小大小。</p>
-</blockquote>
-
-          
+          <div class="post-more-link text-center">
+            <a class="btn" href="/2017/11/06/Monitoring Galera Cluster Status/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
         
       
     </div>
@@ -1357,123 +1380,6 @@
 
 
     
-      
-
-  
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/06/30/python_Django_models/" itemprop="url">
-                  Django Model 操作
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            <span class="post-meta-item-icon">
-              <i class="fa fa-calendar-o"></i>
-            </span>
-            <span class="post-meta-item-text">发表于</span>
-            <time itemprop="dateCreated" datetime="2016-06-30T16:00:00+08:00" content="2016-06-30">
-              2016-06-30
-            </time>
-          </span>
-
-          
-            <span class="post-category" >
-              &nbsp; | &nbsp;
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-              
-                <span itemprop="about" itemscope itemtype="https://schema.org/Thing">
-                  <a href="/categories/Python/" itemprop="url" rel="index">
-                    <span itemprop="name">Python</span>
-                  </a>
-                </span>
-
-                
-                
-
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="Django-Model-介绍"><a href="#Django-Model-介绍" class="headerlink" title="Django Model 介绍"></a>Django Model 介绍</h1><blockquote>
-<p>一般情况下操作数据库都是先创建数据库、设计表结构和字段；使用MySQLdb来连接数据库，并编写访问数据库的代码；然后业务逻辑层调用访问数据的代码，执行数据操作。而Django为我们提供了一种全新的方式，即关系对象映射(Object Relational Mapping，简称ORM)<br>Django中遵循 Code Frist 的原则，即：根据代码中定义的类来自动生成数据库表。</p>
-</blockquote>
-          <div class="post-more-link text-center">
-            <a class="btn" href="/2016/06/30/python_Django_models/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1519,7 +1425,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>

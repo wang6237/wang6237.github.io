@@ -92,7 +92,7 @@
 <meta property="og:site_name" content="记录点滴">
 <meta property="og:description" content="检查集群状态(Monitoring Cluster Status)从客户端查询wsrep_开头的变量， 123456789SHOW GLOBAL STATUS LIKE &amp;apos;wsrep_%&amp;apos;;+------------------------+-------+| Variable_name          | Value |+------------------------+-">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-10T03:35:41.651Z">
+<meta property="og:updated_time" content="2017-11-23T09:45:27.069Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Galera Cluster 的状态监控">
 <meta name="twitter:description" content="检查集群状态(Monitoring Cluster Status)从客户端查询wsrep_开头的变量， 123456789SHOW GLOBAL STATUS LIKE &amp;apos;wsrep_%&amp;apos;;+------------------------+-------+| Variable_name          | Value |+------------------------+-">
@@ -319,6 +319,7 @@
       
         <h1 id="检查集群状态-Monitoring-Cluster-Status"><a href="#检查集群状态-Monitoring-Cluster-Status" class="headerlink" title="检查集群状态(Monitoring Cluster Status)"></a>检查集群状态(Monitoring Cluster Status)</h1><p>从客户端查询wsrep_开头的变量，</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">SHOW GLOBAL STATUS LIKE &apos;wsrep_%&apos;;</div><div class="line">+------------------------+-------+</div><div class="line">| Variable_name          | Value |</div><div class="line">+------------------------+-------+</div><div class="line">| wsrep_protocol_version | 5     |</div><div class="line">| wsrep_last_committed   | 202   |</div><div class="line">| ...					 | ...   |	</div><div class="line">| wsrep_thread_count     | 2     |</div><div class="line">+------------------------+-------+</div></pre></td></tr></table></figure>
+<a id="more"></a>
 <blockquote>
 <p>也可以在集群成员中通过wsrep_notify_cmd.sh查看状态，详情参见Notification Command</p>
 </blockquote>
@@ -500,7 +501,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">15</span>
+              <span class="site-state-item-count">16</span>
               <span class="site-state-item-name">日志</span>
             </a>
           </div>
